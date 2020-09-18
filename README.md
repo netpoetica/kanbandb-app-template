@@ -10,7 +10,7 @@ Hello potential future team member! :D
 
 We're looking forward to having some great days working on creating new projects, debugging issues, planning applications, solving problems, and all of the other fun things we do here in - together with you!
 
-But before that, let's see if you can demonstrate some stock skills you'll need to be successful in this position :)
+But before that, let's see if you can demonstrate some stock skills you'll need to be successful in this position :) we will discuss this code with you during the hiring process, and it will be tremendously helpful for us in evaluating your skills.
 
 Note: if anything isn't specifically called out here, feel free to be as inventive as you like - no pressure to adhere to any strict rules. Our primary goal is to know that you generally understand web application principles.
 
