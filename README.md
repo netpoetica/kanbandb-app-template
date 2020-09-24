@@ -21,7 +21,7 @@ Have fun!
 
 Create a Kanban Board application in React - using this template, which is based on `create-react-app` default template - that meets the below criteria.
 
-You can find instructions and source code for `KanbanDB` [here on Github](https://github.com/netpoetica/KanbanDB#kanbandb). This is a "fake" database that uses local storage to emulate something like an [ROM](https://en.wikipedia.org/wiki/Object-relational_mapping), which you can use to perform CRUD operations on Kanban tasks.
+You can find instructions and source code for `KanbanDB` [here on Github](https://github.com/netpoetica/KanbanDB#kanbandb). This is a "fake" database that uses local storage to emulate something like an [ORM](https://en.wikipedia.org/wiki/Object-relational_mapping), which you can use to perform CRUD operations on Kanban tasks.
 
 1. Fork this repo on Github
 1. There should be three columns with headers: Todo, In Progress, and Done
