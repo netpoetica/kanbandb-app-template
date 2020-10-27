@@ -1,110 +1,6 @@
-.App {
-  height: 100%;
-  display: flex;
-  justify-content: space-around;
-
-  & > * {
-    background-color: #f0f4f8;
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-
-    & > h2 {
-      color: #0b008b;
-      font-size: 26px;
-      font-weight: 600;
-    }
-
-    & > div {
-      flex: 1;
-      width: 100%;
-      padding-top: 25px;
-      padding-bottom: 100px;
-
-      & > div {
-        width: 55%;
-        background-color: #fff;
-        margin-left: auto;
-        margin-right: auto;
-        height: 100px;
-        margin-bottom: 30px;
-        border-radius: 8px;
-        padding: 20px;
-        box-sizing: border-box;
-        color: #334e67;
-        font-size: 20px;
-        font-weight: 550;
-        box-shadow: 1px 5px 5px 1px #dde3e9;
-        cursor: grab;
-      }
-    }
-  }
-
-  & > :nth-child(2) {
-    border-right: 5px solid;
-    border-left: 5px solid;
-    border-image:
-      linear-gradient(
-        to top,
-        #dce4ee,
-        rgba(0, 0, 0, 0)
-      ) 1 100%;
-  }
-}
-
 input:focus,
 button {
   outline: none;
-}
-
-.AddForm {
-  height: 120px;
-  position: relative;
-  width: 70%;
-
-  & > div {
-    position: absolute;
-    bottom: 50%;
-    border-radius: 10px;
-    border: 1px solid #f1f4f6;
-    width: 100%;
-    height: 80%;
-    top: -40px;
-    background-color: #fff;
-    box-shadow: 0 0 20px #d2d7dc;
-    display: flex;
-    justify-content: space-between;
-    padding: 20px;
-    box-sizing: border-box;
-
-    & > :nth-child(1) {
-      background-color: #f0f3f8;
-      border-radius: 10px;
-      border-width: 0;
-      width: 70%;
-      padding-left: 30px;
-      font-size: 20px;
-      font-weight: 500;
-    }
-
-    & > :nth-child(1)::placeholder {
-      color: #aebfd0;
-    }
-
-    & > :nth-child(2) {
-      width: 25%;
-      background-color: #3ebd93;
-      color: #fff;
-      text-transform: uppercase;
-      border-radius: 10px;
-      border-width: 0;
-      cursor: pointer;
-      font-size: 20px;
-      font-weight: lighter;
-    }
-  }
 }
 
 footer {
@@ -116,4 +12,16 @@ footer {
   display: flex;
   justify-content: center;
   background-color: #fff;
+
+  & > :first-child {
+    position: relative;
+    width: 70%;
+
+    & > :first-child {
+      position: absolute;
+      bottom: 50%;
+      width: 100%;
+      top: -40px;
+    }
+  }
 }

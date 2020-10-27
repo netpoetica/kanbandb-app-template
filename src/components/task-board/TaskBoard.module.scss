@@ -1,0 +1,32 @@
+.taskBoard {
+  height: 100%;
+  display: flex;
+  justify-content: space-around;
+
+  & > * {
+    background-color: #f0f4f8;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    border-right: 5px solid;
+    border-image:
+      linear-gradient(
+        to top,
+        #dce4ee,
+        rgba(0, 0, 0, 0)
+      ) 1 100%;
+
+    & > h2 {
+      color: #0b008b;
+      font-size: 26px;
+      font-weight: 600;
+    }
+  }
+
+  & > :last-child {
+    border-image-width: 0%;
+    border-width: 0;
+  }
+}

@@ -1,0 +1,48 @@
+.addForm {
+  border-radius: 10px;
+  border: 1px solid #f1f4f6;
+  background-color: #fff;
+  box-shadow: 0 0 20px #d2d7dc;
+  display: flex;
+  justify-content: space-between;
+  padding: 20px;
+  box-sizing: border-box;
+
+  & > :first-child {
+    background-color: #f0f3f8;
+    border-radius: 10px;
+    border-width: 0;
+    width: 70%;
+    padding-left: 30px;
+    font-size: 20px;
+    font-weight: 500;
+  }
+
+  & > :last-child {
+    width: 25%;
+    background-color: #3ebd93;
+    color: #fff;
+    text-transform: uppercase;
+    border-radius: 10px;
+    border-width: 0;
+    cursor: pointer;
+    font-size: 20px;
+    font-weight: lighter;
+  }
+
+  & > :first-child:focus {
+    border: 1px solid #d2d7dc;
+  }
+
+  & > :first-child::placeholder {
+    color: #aebfd0;
+  }
+
+  & > :last-child:disabled {
+    background-color: rgb(141, 141, 141);
+  }
+
+  & > :last-child:active {
+    background-color: #397;
+  }
+}
