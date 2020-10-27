@@ -2,8 +2,9 @@
   height: 100%;
   display: flex;
   justify-content: space-around;
+
   & > * {
-    background-color: #F0F4F8;
+    background-color: #f0f4f8;
     width: 100%;
     display: flex;
     justify-content: center;
@@ -15,6 +16,7 @@
       font-size: 26px;
       font-weight: 600;
     }
+
     & > div {
       flex: 1;
       width: 100%;
@@ -34,7 +36,7 @@
         color: #334e67;
         font-size: 20px;
         font-weight: 550;
-        box-shadow:  1px 5px 5px 1px #dde3e9;
+        box-shadow: 1px 5px 5px 1px #dde3e9;
         cursor: grab;
       }
     }
@@ -44,15 +46,16 @@
     border-right: 5px solid;
     border-left: 5px solid;
     border-image:
-    linear-gradient(
-      to top,
-      #dce4ee,
-      rgba(0, 0, 0, 0)
-    ) 1 100%;
+      linear-gradient(
+        to top,
+        #dce4ee,
+        rgba(0, 0, 0, 0)
+      ) 1 100%;
   }
 }
 
-input:focus, button{
+input:focus,
+button {
   outline: none;
 }
 
@@ -60,6 +63,7 @@ input:focus, button{
   height: 120px;
   position: relative;
   width: 70%;
+
   & > div {
     position: absolute;
     bottom: 50%;
@@ -68,31 +72,34 @@ input:focus, button{
     width: 100%;
     height: 80%;
     top: -40px;
-    background-color: #ffffff;
+    background-color: #fff;
     box-shadow: 0 0 20px #d2d7dc;
     display: flex;
     justify-content: space-between;
     padding: 20px;
     box-sizing: border-box;
+
     & > :nth-child(1) {
-    background-color: #f0f3f8;
-    border-radius: 10px;
-    border-width: 0px;
-    width: 70%;
-    padding-left: 30px;
-    font-size: 20px;
-    font-weight: 500;
+      background-color: #f0f3f8;
+      border-radius: 10px;
+      border-width: 0;
+      width: 70%;
+      padding-left: 30px;
+      font-size: 20px;
+      font-weight: 500;
     }
-     & > :nth-child(1)::placeholder {
+
+    & > :nth-child(1)::placeholder {
       color: #aebfd0;
     }
+
     & > :nth-child(2) {
       width: 25%;
       background-color: #3ebd93;
       color: #fff;
       text-transform: uppercase;
       border-radius: 10px;
-      border-width: 0px;
+      border-width: 0;
       cursor: pointer;
       font-size: 20px;
       font-weight: lighter;
@@ -104,7 +111,7 @@ footer {
   max-height: 100px;
   height: 90px;
   position: fixed;
-  bottom: 0px;
+  bottom: 0;
   width: 100%;
   display: flex;
   justify-content: center;
