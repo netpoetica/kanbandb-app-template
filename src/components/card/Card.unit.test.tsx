@@ -4,7 +4,7 @@ import { DragDropContext, Droppable } from "react-beautiful-dnd";
 
 import Card from "./Card";
 
-describe("Card", () => {
+describe("components/Card", () => {
   const baseComponent = (component: React.ReactElement): React.ReactElement => (
     // eslint-disable-next-line @typescript-eslint/no-empty-function
     <DragDropContext onDragEnd={(): void => {}}>

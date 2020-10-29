@@ -4,7 +4,7 @@ import { render, fireEvent } from "@testing-library/react";
 import { defaultCategoryColors } from "../../config";
 import AddForm from "./AddForm";
 
-describe("AddForm", () => {
+describe("components/AddForm", () => {
   it("should have text input and a button", () => {
     const { getByTestId } = render(<AddForm onSubmit={jest.fn()} />);
     const textInput = getByTestId("textInput");

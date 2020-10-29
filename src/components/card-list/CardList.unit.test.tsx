@@ -5,7 +5,7 @@ import { render } from "@testing-library/react";
 import { tasks } from "../../testData";
 import CardList from "./CardList";
 
-describe("CardList", () => {
+describe("components/CardList", () => {
   it("should invoke render children function passing the correct parameters", () => {
     const renderChildren = jest.fn();
     render(
