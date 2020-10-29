@@ -2,16 +2,20 @@ import React from "react";
 import { Droppable } from "react-beautiful-dnd";
 
 import { Task } from "../../types";
-import Card from "../card/Card";
 
 import styles from "./CardList.module.scss";
 
 export type Props = {
   id: string;
   tasks: Task[];
+  children: (task: Task, index: number) => React.ReactElement;
 };
 
-export default function CardList({ tasks, id }: Props): React.ReactElement {
+export default function CardList({
+  tasks,
+  id,
+  children,
+}: Props): React.ReactElement {
   return (
     <Droppable droppableId={id}>
       {(provided): React.ReactElement => (
@@ -21,14 +25,7 @@ export default function CardList({ tasks, id }: Props): React.ReactElement {
           {...provided.droppableProps}
           className={styles.cardList}
         >
-          {tasks.map((task: Task, index: number) => (
-            <Card
-              id={task.id}
-              content={task.content}
-              index={index}
-              key={task.id}
-            />
-          ))}
+          {tasks.map((task: Task, index: number) => children(task, index))}
           {provided.placeholder}
         </div>
       )}

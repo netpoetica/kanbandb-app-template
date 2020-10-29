@@ -3,14 +3,50 @@
   background-color: #fff;
   margin-left: auto;
   margin-right: auto;
-  height: 100px;
+  min-height: 100px;
   margin-bottom: 30px;
   border-radius: 8px;
   padding: 20px;
   box-sizing: border-box;
   color: #334e67;
-  font-size: 20px;
+  font-size: 16px;
   font-weight: 550;
   box-shadow: 1px 5px 5px 1px #dde3e9;
   cursor: grab;
+  position: relative;
+
+  span {
+    color: white;
+    background-color: red;
+    padding: 4px 8px 4px 8px;
+    font-size: small;
+    border-radius: 5px;
+    text-transform: uppercase;
+  }
+
+  p {
+    vertical-align: middle;
+  }
+
+  button {
+    cursor: pointer;
+    height: 30px;
+    width: 30px;
+    border-radius: 15px;
+    font-weight: bolder;
+    background-color: #ff5858;
+    color: #fff;
+    position: absolute;
+    border: 1px solid #c6ccd3;
+    top: -6%;
+    right: -3%;
+    margin: 0;
+    display: none;
+  }
+
+  &:hover {
+    button {
+      display: block;
+    }
+  }
 }

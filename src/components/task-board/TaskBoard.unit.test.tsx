@@ -1,38 +1,21 @@
 import React from "react";
 import { render } from "@testing-library/react";
 
+import { completeBoards } from "../../testData";
 import TaskBoard from "./TaskBoard";
-import { Board, Task } from "../../types";
 
-describe("TaskBoard", () => {
-  it("should display CardList and a title", () => {
-    const tasks: Task[] = [
-      {
-        content: "test1",
-        id: "id-test1",
-      },
-      {
-        content: "test2",
-        id: "id-test2",
-      },
-    ];
-    const boards: Board[] = [
-      {
-        id: "testId1",
-        label: "Label 1",
-        tasks: tasks,
-      },
-      {
-        id: "testId2",
-        label: "Label 2",
-        tasks: tasks,
-      },
-    ];
-    const { queryAllByTestId } = render(
-      // eslint-disable-next-line @typescript-eslint/no-empty-function
-      <TaskBoard boards={boards} onDragEnd={(): void => {}} />
+describe("components/TaskBoard", () => {
+  it("should invoke render children function passing the correct parameters", () => {
+    const renderChildren = jest.fn();
+    render(
+      <TaskBoard boards={completeBoards} onDragEnd={jest.fn()}>
+        {renderChildren}
+      </TaskBoard>
     );
-    const elements = queryAllByTestId("board");
-    expect(elements.length).toBe(boards.length);
+    renderChildren.mock.calls.forEach((call, index) => {
+      expect(call[0]).toBe(completeBoards[index].id);
+      expect(call[1]).toEqual(completeBoards[index].tasks);
+    });
+    expect(renderChildren).toHaveBeenCalledTimes(completeBoards.length);
   });
 });

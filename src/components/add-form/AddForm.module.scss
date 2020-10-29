@@ -8,18 +8,8 @@
   padding: 20px;
   box-sizing: border-box;
 
-  & > :first-child {
-    background-color: #f0f3f8;
-    border-radius: 10px;
-    border-width: 0;
-    width: 70%;
-    padding-left: 30px;
-    font-size: 20px;
-    font-weight: 500;
-  }
-
   & > :last-child {
-    width: 25%;
+    width: 23%;
     background-color: #3ebd93;
     color: #fff;
     text-transform: uppercase;
@@ -28,6 +18,38 @@
     cursor: pointer;
     font-size: 20px;
     font-weight: lighter;
+  }
+
+  & > :first-child {
+    width: 75%;
+    background-color: #f0f3f8;
+    border-radius: 10px;
+    border-width: 0;
+    padding-left: 30px;
+    padding-right: 10px;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: space-between;
+
+    & > * {
+      width: 100%;
+      border: 0;
+      font-size: 20px;
+      font-weight: 500;
+      background-color: inherit;
+    }
+
+    & > :last-child {
+      margin-top: auto;
+      margin-bottom: auto;
+      border-left: 2px solid #a0a5aa;
+      height: 60%;
+      padding-left: 10px;
+      font-size: 14px;
+      font-weight: bold;
+      width: 20%;
+      text-transform: uppercase;
+    }
   }
 
   & > :first-child:focus {

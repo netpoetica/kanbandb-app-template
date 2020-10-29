@@ -1,14 +1,12 @@
 import React from "react";
 import { render, fireEvent } from "@testing-library/react";
 
+import { defaultCategoryColors } from "../../config";
 import AddForm from "./AddForm";
 
 describe("AddForm", () => {
   it("should have text input and a button", () => {
-    const { getByTestId } = render(
-      // eslint-disable-next-line @typescript-eslint/no-empty-function
-      <AddForm onSubmit={(): void => {}} />
-    );
+    const { getByTestId } = render(<AddForm onSubmit={jest.fn()} />);
     const textInput = getByTestId("textInput");
     const button = getByTestId("submitButton");
     expect(textInput).toBeInTheDocument();
@@ -20,13 +18,10 @@ describe("AddForm", () => {
     const mockCallback = jest.fn((content): void => {});
     const { getByTestId } = render(<AddForm onSubmit={mockCallback} />);
     fireEvent.change(getByTestId("textInput"), { target: { value: "input" } });
-    fireEvent(
-      getByTestId("submitButton"),
-      new MouseEvent("click", {
-        bubbles: true,
-        cancelable: true,
-      })
+    fireEvent.submit(getByTestId("addForm"));
+    expect(mockCallback).toHaveBeenCalledWith(
+      "input",
+      defaultCategoryColors[0].label
     );
-    expect(mockCallback).toHaveBeenCalledWith("input");
   });
 });
