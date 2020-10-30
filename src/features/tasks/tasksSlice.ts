@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
+import service from "../../services/TaskService";
 import { Task, Board } from "../../types";
 import { AppThunk, RootState } from "../../store";
 
@@ -52,6 +53,17 @@ export const initialState: TasksState = {
     },
   },
 };
+
+async function updatePriority(tasks: Task[]): Promise<void> {
+  await Promise.all(
+    tasks.map(async (task, index) => {
+      return service.update(task.id, {
+        ...task,
+        priority: index,
+      });
+    })
+  );
+}
 
 function reorderTasks(
   list: Task[],
@@ -162,9 +174,25 @@ export const tasksSlice = createSlice({
     hydrate: (state, action: PayloadAction<Task[]>): void => {
       const tasks = action.payload;
       const records = state.records;
+      const tasksCollection: Partial<
+        {
+          [key in Board["id"]]: Task[];
+        }
+      > = {};
       for (const task of tasks) {
-        if (records[task.status]) {
-          records[task.status].tasks.push(task);
+        if (tasksCollection[task.status]) {
+          tasksCollection[task.status]?.push(task);
+        } else {
+          tasksCollection[task.status] = [task];
+        }
+      }
+      for (const key in tasksCollection) {
+        const id = key as Board["id"];
+        const collection = tasksCollection[id];
+        if (records[id] && collection) {
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+          collection.sort((a, b) => a.priority! - b.priority!);
+          records[id].tasks = collection;
         }
       }
     },
@@ -193,9 +221,51 @@ export const {
   changeTaskStatus,
 } = tasksSlice.actions;
 
+export const saveTask = (
+  partial: Pick<Task, "content" | "name">
+): AppThunk => async (dispatch, state): Promise<void> => {
+  const task = await service.add(partial);
+  if (task) {
+    dispatch(addTask(task));
+    const records = state().tasks.records;
+    if (records[task.status]) {
+      await updatePriority(records[task.status].tasks);
+    }
+  }
+};
+
 export const fetchTasks = (): AppThunk => async (dispatch): Promise<void> => {
-  // const response = await WeekDataService.fetchCampaigns();
-  // dispatch(hydrate(response));
+  const tasks = await service.fetchAll();
+  dispatch(hydrate(tasks));
+};
+
+export const updateTaskToSameBoard = (
+  payload: TaskMoveToSameBoardPayload
+): AppThunk => async (dispatch, state): Promise<void> => {
+  dispatch(moveTaskToSameBoard(payload));
+  const records = state().tasks.records;
+  if (records[payload.id]) {
+    const tasks = records[payload.id].tasks;
+    await updatePriority(tasks);
+  }
+};
+
+export const updateTaskToAnotherBoard = (
+  payload: TaskMoveToAnotherBoardPayload
+): AppThunk => async (dispatch, state): Promise<void> => {
+  dispatch(moveTaskToAnotherBoard(payload));
+  const records = state().tasks.records;
+  const sourceTasks = records[payload.source.id].tasks;
+  const destinationTasks = records[payload.destination.id].tasks;
+  await updatePriority(sourceTasks);
+  await updatePriority(destinationTasks);
+};
+
+export const deleteTask = (payload: Task): AppThunk => async (
+  dispatch
+): Promise<void> => {
+  await service.remove(payload.id);
+  dispatch(removeTask(payload));
 };
 
 export const selectBoards = (state: RootState): Board[] => {

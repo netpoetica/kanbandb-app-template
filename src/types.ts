@@ -1,4 +1,6 @@
-export type TaskStatus = "TODO" | "DOING" | "DONE";
+import { Card } from "./services/TaskService";
+
+export type TaskStatus = Card["status"];
 export type Category =
   | "feature"
   | "enhancement"
@@ -17,6 +19,7 @@ export type Task = {
   content: string;
   status: TaskStatus;
   name: Category;
+  priority?: number;
 };
 
 export type Board = {
@@ -24,12 +27,3 @@ export type Board = {
   label: string;
   tasks: Task[];
 };
-
-// {
-//   id: string;
-//   name: string;
-//   description: string;
-//   status: 'TODO' | 'DOING' | 'DONE';
-//   created: Date; // UNIX timestamp
-//   lastUpdated: Date; // UNIX timestamp
-// }

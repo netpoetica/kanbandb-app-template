@@ -1,18 +1,29 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { DropResult } from "react-beautiful-dnd";
-import { Dispatch } from "@reduxjs/toolkit";
 
 import {
-  removeTask,
-  moveTaskToAnotherBoard,
-  moveTaskToSameBoard,
+  TaskMoveToAnotherBoardPayload,
+  TaskMoveToSameBoardPayload,
+  updateTaskToAnotherBoard,
+  updateTaskToSameBoard,
+  fetchTasks,
+  deleteTask,
   selectBoards,
 } from "./tasksSlice";
 import { Board } from "../../types";
 import { TaskBoard, CardList, Card } from "../../components";
 
-export function onDragEnd(result: DropResult, dispatch: Dispatch): void {
+export type UpdateSameBoardFn = (payload: TaskMoveToSameBoardPayload) => void;
+export type UpdateMoveBoardFn = (
+  payload: TaskMoveToAnotherBoardPayload
+) => void;
+
+export function onDragEnd(
+  result: DropResult,
+  updateSameBoard: UpdateSameBoardFn,
+  updateAnotherBoard: UpdateMoveBoardFn
+): void {
   const { source, destination } = result;
 
   if (!destination) {
@@ -20,26 +31,23 @@ export function onDragEnd(result: DropResult, dispatch: Dispatch): void {
   }
 
   if (source.droppableId === destination.droppableId) {
-    dispatch(
-      moveTaskToSameBoard({
-        id: source.droppableId as Board["id"],
-        sourceIndex: source.index,
-        destinationIndex: destination.index,
-      })
-    );
+    if (source.index === destination.index) return;
+    updateSameBoard({
+      id: source.droppableId as Board["id"],
+      sourceIndex: source.index,
+      destinationIndex: destination.index,
+    });
   } else {
-    dispatch(
-      moveTaskToAnotherBoard({
-        source: {
-          id: source.droppableId as Board["id"],
-          index: source.index,
-        },
-        destination: {
-          id: destination.droppableId as Board["id"],
-          index: destination.index,
-        },
-      })
-    );
+    updateAnotherBoard({
+      source: {
+        id: source.droppableId as Board["id"],
+        index: source.index,
+      },
+      destination: {
+        id: destination.droppableId as Board["id"],
+        index: destination.index,
+      },
+    });
   }
 }
 
@@ -47,10 +55,27 @@ export default function Tasks(): React.ReactElement {
   const boards: Board[] = useSelector(selectBoards);
   const dispatch = useDispatch();
 
+  useEffect(() => {
+    dispatch(fetchTasks());
+  }, [dispatch]);
+
+  const updateSameBoard: UpdateSameBoardFn = (
+    payload: TaskMoveToSameBoardPayload
+  ): void => {
+    dispatch(updateTaskToSameBoard(payload));
+  };
+  const updateAnotherBoard: UpdateMoveBoardFn = (
+    payload: TaskMoveToAnotherBoardPayload
+  ): void => {
+    dispatch(updateTaskToAnotherBoard(payload));
+  };
+
   return (
     <TaskBoard
       boards={boards}
-      onDragEnd={(result): void => onDragEnd(result, dispatch)}
+      onDragEnd={(result): void =>
+        onDragEnd(result, updateSameBoard, updateAnotherBoard)
+      }
     >
       {(id, tasks): React.ReactElement => (
         <CardList id={id} tasks={tasks}>
@@ -62,7 +87,7 @@ export default function Tasks(): React.ReactElement {
               content={task.content}
               index={index}
               onDelete={(): void => {
-                dispatch(removeTask(task));
+                dispatch(deleteTask(task));
               }}
             />
           )}

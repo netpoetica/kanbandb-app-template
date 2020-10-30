@@ -17,6 +17,22 @@ describe("components/Card", () => {
       </Droppable>
     </DragDropContext>
   );
+
+  it("should render a card", () => {
+    const { getByTestId } = render(
+      baseComponent(
+        <Card
+          id="test"
+          title="bug"
+          content="content"
+          index={1}
+          onDelete={jest.fn()}
+        />
+      )
+    );
+    const card = getByTestId("card");
+    expect(card).toBeInTheDocument();
+  });
   it("should render a content from props", () => {
     const { getByText } = render(
       baseComponent(
