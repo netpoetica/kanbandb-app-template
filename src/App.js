@@ -5,39 +5,7 @@ function initialize() {
   KanbanDB.connect();
 }
 
-function renderTitle(title) {
-  return (
-    <div style={{ display: "flex", height: 100, justifyContent: "center", alignItems: "center", flex: 1 }}>
-      <h4 style={{ color: "#0b008b" }}>{title}</h4>
-    </div>
-  )
-}
 
-function Card(card, updateCard, deleteCard) {
-  const statuses = [{ status: "TODO", label: "to do" }, { status: "DOING", label: "doing" }, { status: "DONE", label: "done" }]
-  return (
-    <div style={{
-      flexDirection: "column", marginBottom: 14, backgroundColor: "grey", padding: 14, paddingBottom: 25, backgroundColor: "#ffffff", borderRadius: 7,
-      boxShadow: "0px 6px 15px 0px #d6dfe9"
-    }}>
-      <div>
-        <p style={{ color: "#334e67", margin: 0 }}>{card.name + ' : ' + card.description}</p>
-      </div>
-      {
-        <div style={{ display: "flex", flexDirection: "row", height: 20, width: "100%", position: "relative", top: 15, justifyContent: "space-between" }}>
-          <div>
-            {
-              statuses.filter(x => x.status != card.status).map(y => { return <small onClick={() => updateCard(card.id, { ...card, status: y.status })} style={{ marginRight: 8, fontWeight: "bold", color: "#c9d1da", cursor: "pointer" }}> {y.label}</small> })
-            }
-          </div>
-          {
-            <small onClick={()=> deleteCard(card.id)} style={{ alignSelf: "flex-end", color: "#fb5c5c", fontWeight: "bold", cursor: "pointer" }}>delete</small>
-          }
-        </div>
-      }
-    </div>
-  )
-}
 
 function App() {
 
@@ -45,7 +13,9 @@ function App() {
   const [description, setDescription] = useState("");
   const [status, setStatus] = useState("TODO");
   const [cards, setCards] = useState([]);
+  const [cardId, setCardId] = useState(null)
   const modalRef = useRef(null)
+  const [editMode, setEditMode] = useState(false)
 
   useEffect(() => {
     initialize()
@@ -58,11 +28,63 @@ function App() {
       })
   }, [])
 
-  const toggleModal = () => {
-    modalRef.current.style.display != "block" ?
+  function renderTitle(title) {
+    return (
+      <div style={{ display: "flex", height: 100, justifyContent: "center", alignItems: "center", flex: 1 }}>
+        <h4 style={{ color: "#0b008b" }}>{title}</h4>
+      </div>
+    )
+  }
+
+  const clearState = () => {
+    setStatus("TODO")
+    setTitle("")
+    setDescription("")
+    setCardId(null)
+  }
+
+  const toggleModal = (card) => {
+    if(card && card.id){
+      setEditMode(true)
+      setDescription(card.description)
+      setTitle(card.name)
+      setCardId(card.id)
+      setStatus(card.status)
+    }
+
+    if (modalRef.current.style.display != "block"){
       modalRef.current.style.display = "block"
-      :
+    } else {
       modalRef.current.style.display = "none"
+      clearState()
+    }
+  }
+
+  function Card(card) {
+    const statuses = [{ status: "TODO", label: "to do" }, { status: "DOING", label: "doing" }, { status: "DONE", label: "done" }]
+    return (
+      <div style={{
+        flexDirection: "column", marginBottom: 14, backgroundColor: "grey", padding: 14, paddingBottom: 25, backgroundColor: "#ffffff", borderRadius: 7,
+        boxShadow: "0px 6px 15px 0px #d6dfe9"
+      }}>
+        <div>
+          <p style={{ color: "#334e67", margin: 0 }}>{card.name + ' : ' + card.description}</p>
+        </div>
+        {
+          <div style={{ display: "flex", flexDirection: "row", height: 20, width: "100%", position: "relative", top: 15, justifyContent: "space-between" }}>
+            <div>
+              {
+                statuses.filter(x => x.status != card.status).map(y => { return <small onClick={() => updateCard(card.id, { ...card, status: y.status })} style={{ marginRight: 8, fontWeight: "bold", color: "#c9d1da", cursor: "pointer" }}> {y.label}</small> })
+              }
+            </div>
+            <div>
+                <small onClick={()=> toggleModal(card)} style={{ alignSelf: "flex-end", color: "rgb(112 208 238 / 1)", fontWeight: "bold", cursor: "pointer" }}>edit</small>
+                <small onClick={()=> deleteCard(card.id)} style={{ marginLeft:8, alignSelf: "flex-end", color: "#fb5c5c", fontWeight: "bold", cursor: "pointer" }}>delete</small>
+            </div>
+          </div>
+        }
+      </div>
+    )
   }
 
   const addToBoard = () => {
@@ -70,9 +92,7 @@ function App() {
       .addCard({ name: title, description: description, status: status })
       .then(cardId => KanbanDB.getCards()
         .then((cards) => {
-          setTitle("")
-          setDescription("")
-          setStatus("TODO")
+          clearState()
           setCards(cards)
           toggleModal()
         })
@@ -81,6 +101,12 @@ function App() {
   }
 
   const updateCard = (id, data) => {
+    if (editMode) {
+      setEditMode(false)
+      clearState()
+      toggleModal()
+    }
+
     KanbanDB
       .updateCardById(id, data)
       .then(() => KanbanDB.getCards()
@@ -101,7 +127,7 @@ function App() {
       )
       .catch(err => setCards([]))
   }
-
+  
   return (
     <div className="App" style={{ justifyContent: "center", alignItems: "center", backgroundColor: "#f0f4f8" }}>
       <div style={{ flexDirection: "row", display: "flex", height: 700, width: 1000 }}>
@@ -147,7 +173,7 @@ function App() {
 
         <div className="modal-content">
           <div style={{ display: "flex", flexDirection: "row", height: 30, justifyContent: "space-between", alignItems: "center" }}>
-            <h3 style={{ color: "#808080" }}>Add To Board</h3>
+            <h3 style={{ color: "#808080" }}>{ editMode ? "Edit Card" : "Add To Board"}</h3>
             <h4 onClick={toggleModal} style={{ color: "#808080", cursor: "pointer" }}>Close</h4>
           </div>
           <div onSubmit={addToBoard} style={{ display: "flex", flexDirection: "column", justifyContent: "space-between", width: "100%", marginTop: 20 }}>
@@ -168,7 +194,7 @@ function App() {
               </select>
             </label>
 
-            <input type="submit" onClick={addToBoard} style={{ marginTop: 30, width: 170, height: 35, border: "none", borderRadius: 3, backgroundColor: "rgb(75 166 230 / 39)", color: "white", fontWeight: "bold", fontSize: 15 }} value="POST" />
+            <input type="submit" onClick={() => editMode ? updateCard(cardId, {name: title, description: description, status: status}) : addToBoard()} style={{ marginTop: 30, width: 170, height: 35, border: "none", borderRadius: 3, backgroundColor: "rgb(75 166 230 / 39)", color: "white", fontWeight: "bold", fontSize: 15 }} value={editMode ? "UPDATE":"POST"} />
           </div>
         </div>
       </div>
