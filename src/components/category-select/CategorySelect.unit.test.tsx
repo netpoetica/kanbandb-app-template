@@ -2,7 +2,10 @@ import React from "react";
 import { fireEvent, render } from "@testing-library/react";
 
 import { defaultCategoryColors } from "../../config";
-import CategorySelect from "./CategorySelect";
+import CategorySelect, {
+  renderOptions,
+  onSelectChange,
+} from "./CategorySelect";
 
 describe("components/CardSelect", () => {
   it("should render a category select", () => {
@@ -37,5 +40,29 @@ describe("components/CardSelect", () => {
       target: { value: defaultCategoryColors[3].label },
     });
     expect(onChange).toHaveBeenCalledWith(defaultCategoryColors[3]);
+  });
+
+  it("should render options properly", async () => {
+    const { findAllByTestId } = render(<>{renderOptions()}</>);
+    const options = (await findAllByTestId(
+      "categoryOption"
+    )) as HTMLOptionElement[];
+    expect(options.length).toBe(defaultCategoryColors.length);
+    options.forEach((opts, index) => {
+      expect(opts.value).toBe(defaultCategoryColors[index].label);
+      expect(opts.style.color).toBe(defaultCategoryColors[index].color);
+      expect(opts).toHaveTextContent(defaultCategoryColors[index].label);
+    });
+  });
+
+  it("should select the proper value for onChange callback", () => {
+    const onChange = jest.fn();
+    const method = onSelectChange(onChange, defaultCategoryColors);
+    method({
+      target: {
+        value: defaultCategoryColors[1].label,
+      },
+    } as React.ChangeEvent<HTMLSelectElement>);
+    expect(onChange).toBeCalledWith(defaultCategoryColors[1]);
   });
 });

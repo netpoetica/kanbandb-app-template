@@ -1,13 +1,20 @@
 import React from "react";
-import { fireEvent, render } from "@testing-library/react";
-import { DragDropContext, Droppable } from "react-beautiful-dnd";
+import { fireEvent, render, cleanup } from "@testing-library/react";
+import {
+  DragDropContext,
+  DraggableProvided,
+  Droppable,
+} from "react-beautiful-dnd";
 
-import Card from "./Card";
+import Card, { renderProvided } from "./Card";
+import { defaultCategoryColors } from "../../config";
 
 describe("components/Card", () => {
+  beforeEach(() => {
+    cleanup();
+  });
   const baseComponent = (component: React.ReactElement): React.ReactElement => (
-    // eslint-disable-next-line @typescript-eslint/no-empty-function
-    <DragDropContext onDragEnd={(): void => {}}>
+    <DragDropContext onDragEnd={jest.fn()}>
       <Droppable droppableId="test">
         {(provided): React.ReactElement => (
           <div ref={provided.innerRef} {...provided.droppableProps}>
@@ -81,5 +88,20 @@ describe("components/Card", () => {
     const element = getByTestId("deleteButton");
     fireEvent.click(element);
     expect(onDelete).toHaveBeenCalled();
+  });
+
+  it("should render provided", () => {
+    const onDelete = jest.fn();
+    const method = renderProvided(
+      "test",
+      "bug",
+      "content",
+      onDelete,
+      defaultCategoryColors[0]
+    );
+    const { getByTestId } = render(method({} as DraggableProvided));
+    const card = getByTestId("card");
+    expect(card).toBeInTheDocument();
+    expect(card.dataset.cardId).toBe("test");
   });
 });

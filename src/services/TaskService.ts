@@ -12,7 +12,7 @@ export type Card = {
 };
 
 export class TaskService {
-  private entityName: string;
+  entityName: string;
   private db?: typeof KanbanDB;
   constructor(entityName = "tasks") {
     this.entityName = entityName;

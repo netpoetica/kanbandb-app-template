@@ -9,6 +9,31 @@ export type Props = {
   onChange: (categoryOption: CategoryOption) => void;
 };
 
+export function renderOptions(): React.ReactNode {
+  return defaultCategoryColors.map((x, index) => (
+    <option
+      data-testid="categoryOption"
+      key={index}
+      style={{ color: x.color }}
+      value={x.label}
+    >
+      {x.label}
+    </option>
+  ));
+}
+
+export function onSelectChange(
+  onChange: Props["onChange"],
+  colors: CategoryOption[]
+) {
+  return (event: React.ChangeEvent<HTMLSelectElement>): void => {
+    const find = colors.find((x) => x.label === event.target.value);
+    if (find) {
+      onChange(find);
+    }
+  };
+}
+
 export default function CategorySelect({
   value,
   onChange,
@@ -22,25 +47,9 @@ export default function CategorySelect({
       style={
         (selectedCategory && { color: selectedCategory.color }) || undefined
       }
-      onChange={(event: React.ChangeEvent<HTMLSelectElement>): void => {
-        const find = defaultCategoryColors.find(
-          (x) => x.label === event.target.value
-        );
-        if (find) {
-          onChange(find);
-        }
-      }}
+      onChange={onSelectChange(onChange, defaultCategoryColors)}
     >
-      {defaultCategoryColors.map((x, index) => (
-        <option
-          data-testid="categoryOption"
-          key={index}
-          style={{ color: x.color }}
-          value={x.label}
-        >
-          {x.label}
-        </option>
-      ))}
+      {renderOptions()}
     </select>
   );
 }
