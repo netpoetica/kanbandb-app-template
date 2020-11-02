@@ -70,14 +70,35 @@ export class TaskService {
 
   async update(
     id: Task["id"],
-    partialTask: Omit<Task, "id">
-  ): Promise<boolean> {
+    partialTask: Partial<Omit<Task, "id">>
+  ): Promise<Task | undefined> {
     const db = await this.fetchDb();
     try {
-      const result = await db.updateCardById(id, partialTask);
-      return result;
+      console.log(partialTask);
+      const result = await db.updateCardById(id, {
+        ...(partialTask.name ? { name: partialTask.name } : undefined),
+        ...(partialTask.content
+          ? { description: partialTask.content }
+          : undefined),
+        ...(partialTask.status ? { status: partialTask.status } : undefined),
+        ...(partialTask.priority
+          ? { priority: partialTask.priority }
+          : undefined),
+      });
+      if (result) {
+        const card = await db.getCardById(id);
+        if (card)
+          return {
+            id: card.id,
+            content: card.description,
+            name: card.name,
+            status: card.status,
+            priority: card.priority,
+          };
+      }
+      return undefined;
     } catch (e) {
-      return false;
+      return undefined;
     }
   }
 }

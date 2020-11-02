@@ -10,7 +10,8 @@ import {
   selectBoards,
 } from "./tasksSlice";
 import { Board, Task } from "../../types";
-import { TaskBoard, CardList, Card } from "../../components";
+import { TaskBoard, CardList } from "../../components";
+import TaskCard from "./TaskCard";
 
 export type DispatchType = (
   payload:
@@ -45,16 +46,7 @@ export function fetchInitialData(
 
 export function renderCard(dispatch: DispatchType, deleteFn: typeof onDelete) {
   return (task: Task, index: number): React.ReactElement => {
-    return (
-      <Card
-        key={task.id}
-        id={task.id}
-        title={task.name}
-        content={task.content}
-        index={index}
-        onDelete={deleteFn(task, deleteTask, dispatch)}
-      />
-    );
+    return <TaskCard key={task.id} task={task} index={index} />;
   };
 }
 

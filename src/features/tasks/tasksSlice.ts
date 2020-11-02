@@ -10,6 +10,7 @@ export type BoardDestination = {
 };
 
 export type TasksState = {
+  activeTask?: Task["id"];
   records: {
     [key in Board["id"]]: Omit<Board, "id">;
   };
@@ -123,6 +124,31 @@ export const tasksSlice = createSlice({
         board.tasks = [...board.tasks, payload];
       }
     },
+    // changeActiveTask: (state, action: PayloadAction<Task["id"]>): void => {
+    //   const { records } = state;
+    //   const { payload } = action;
+    //   // TODO: make this more generic
+    //   const tasks = [
+    //     ...records.TODO.tasks,
+    //     ...records.DOING.tasks,
+    //     ...records.DONE.tasks,
+    //   ];
+    //   const find = tasks.find((x) => x.id === payload);
+    //   if (find) {
+    //     state.activeTask = find.id;
+    //   }
+    // },
+    updateTask: (state, action: PayloadAction<Task>): void => {
+      const { records } = state;
+      const { payload } = action;
+      const tasks = records[payload.status].tasks;
+      if (tasks) {
+        const findIndex = tasks.findIndex((x) => x.id === payload.id);
+        if (findIndex >= 0) {
+          tasks[findIndex] = payload;
+        }
+      }
+    },
     removeTask: (state, action: PayloadAction<Task>): void => {
       const { records } = state;
       const { payload } = action;
@@ -213,6 +239,8 @@ export const tasksSlice = createSlice({
 });
 
 export const {
+  // changeActiveTask,
+  updateTask,
   moveTaskToAnotherBoard,
   moveTaskToSameBoard,
   addTask,
@@ -231,6 +259,15 @@ export const saveTask = (
     if (records[task.status]) {
       await updatePriority(records[task.status].tasks);
     }
+  }
+};
+
+export const updateTaskDetails = (
+  task: Pick<Task, "id" | "content" | "name">
+): AppThunk => async (dispatch): Promise<void> => {
+  const updatedTask = await service.update(task.id, task);
+  if (updatedTask) {
+    dispatch(updateTask(updatedTask));
   }
 };
 
