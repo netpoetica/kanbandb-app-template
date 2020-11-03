@@ -29,6 +29,12 @@ export function onCardTextChange(onChange: Props["onTextChange"]) {
   };
 }
 
+export function onCardCategoryChange(onChange: Props["onCategoryChange"]) {
+  return (option: CategoryOption): void => {
+    onChange(option.label);
+  };
+}
+
 export function renderView(
   title: Props["title"],
   content: Props["content"],
@@ -43,8 +49,8 @@ export function renderView(
       >
         {title}
       </span>
-      <p>{content} </p>
-      <button className="editBtn" onClick={onEdit}>
+      <p data-testid="content">{content} </p>
+      <button data-testid="editButton" className="editBtn" onClick={onEdit}>
         Edit <EditIcon />
       </button>
     </>
@@ -62,17 +68,20 @@ export function renderEdit(
   return (
     <>
       <CategorySelect
-        onChange={(opts): void => onCategoryChange(opts.label)}
+        onChange={onCardCategoryChange(onCategoryChange)}
         value={title}
       />
       <input
+        data-testid="inputText"
         type="text"
         value={content}
         onChange={onCardTextChange(onTextChange)}
       />
-      <div className="editButtonGroup">
-        <button onClick={onCancelUpdate}>Cancel</button>
-        <button onClick={onUpdate}>
+      <div data-testid="editButtonGroup" className="editButtonGroup">
+        <button data-testid="confirmCancelButton" onClick={onCancelUpdate}>
+          Cancel
+        </button>
+        <button data-testid="confirmUpdateButton" onClick={onUpdate}>
           Save <DoneIcon />
         </button>
       </div>

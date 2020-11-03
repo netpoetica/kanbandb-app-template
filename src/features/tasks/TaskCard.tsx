@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Dispatch, SetStateAction } from "react";
 import { useDispatch } from "react-redux";
 
-import { Task } from "../../types";
+import { Task, Category } from "../../types";
 import { Card } from "../../components";
 import { deleteTask, updateTaskDetails } from "./tasksSlice";
 
@@ -34,17 +34,58 @@ export function onUpdate(
   };
 }
 
-export default function TaskCard({ task, index }: Props): React.ReactElement {
-  const [content, setContent] = useState(task.content);
-  const [title, setTitle] = useState(task.name);
-  const [isEdit, setIsEdit] = useState(false);
-  const dispatch = useDispatch();
-  useEffect(() => {
+export function onEditChanged(
+  task: Task,
+  isEdit: boolean,
+  setContent: Dispatch<SetStateAction<string>>,
+  setTitle: Dispatch<SetStateAction<Category>>
+) {
+  return (): void => {
     if (isEdit === false) {
       setContent(task.content);
       setTitle(task.name);
     }
-  }, [isEdit, task.content, task.name]);
+  };
+}
+
+export function changeEdit(
+  setIsEdit: Dispatch<SetStateAction<boolean>>,
+  value: boolean
+) {
+  return (): void => {
+    setIsEdit(value);
+  };
+}
+
+export function createState(
+  content: Props["task"]["content"],
+  name: Props["task"]["name"],
+  edit: boolean,
+  stateFn: typeof useState
+): [
+  string,
+  Dispatch<SetStateAction<string>>,
+  Category,
+  Dispatch<SetStateAction<Category>>,
+  boolean,
+  Dispatch<SetStateAction<boolean>>
+] {
+  return [...stateFn(content), ...stateFn(name), ...stateFn(edit)];
+}
+
+export default function TaskCard({ task, index }: Props): React.ReactElement {
+  const [content, setContent, title, setTitle, isEdit, setIsEdit] = createState(
+    task.content,
+    task.name,
+    false,
+    useState
+  );
+  const dispatch = useDispatch();
+  useEffect(onEditChanged(task, isEdit, setContent, setTitle), [
+    isEdit,
+    task.content,
+    task.name,
+  ]);
   return (
     <Card
       id={task.id}
@@ -62,8 +103,8 @@ export default function TaskCard({ task, index }: Props): React.ReactElement {
       )}
       onTextChange={setContent}
       onCategoryChange={setTitle}
-      onCancelUpdate={(): void => setIsEdit(false)}
-      onEdit={(): void => setIsEdit(true)}
+      onCancelUpdate={changeEdit(setIsEdit, false)}
+      onEdit={changeEdit(setIsEdit, true)}
       mode={isEdit ? "edit" : "view"}
     />
   );

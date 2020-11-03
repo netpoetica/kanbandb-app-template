@@ -19,21 +19,15 @@ export type State = {
 
 export type DispatchType = (payload: ReturnType<typeof saveTask>) => void;
 
-export function createState(stateFn: typeof useState): State {
-  const [text, setText] = stateFn("");
-  const [category, setCategory] = stateFn<CategoryOption>(
-    defaultCategoryColors[0]
-  );
-  return {
-    text: {
-      value: text,
-      fn: setText,
-    },
-    category: {
-      value: category,
-      fn: setCategory,
-    },
-  };
+export function createState(
+  stateFn: typeof useState
+): [
+  string,
+  Dispatch<SetStateAction<string>>,
+  CategoryOption,
+  Dispatch<SetStateAction<CategoryOption>>
+] {
+  return [...stateFn(""), ...stateFn<CategoryOption>(defaultCategoryColors[0])];
 }
 
 export function onSubmit(
@@ -55,21 +49,15 @@ export function onSubmit(
 }
 
 export default function TaskFrom(): React.ReactElement {
-  const state = createState(useState);
+  const [text, setText, category, setCategory] = createState(useState);
   const dispatch = useDispatch();
   return (
     <AddForm
-      onSubmit={onSubmit(
-        state.text.value,
-        state.category.value.label,
-        dispatch,
-        saveTask,
-        state.text.fn
-      )}
-      text={state.text.value}
-      category={state.category.value.label}
-      onCategoryChange={state.category.fn}
-      onTextChange={state.text.fn}
+      onSubmit={onSubmit(text, category.label, dispatch, saveTask, setText)}
+      text={text}
+      category={category.label}
+      onCategoryChange={setCategory}
+      onTextChange={setText}
     />
   );
 }

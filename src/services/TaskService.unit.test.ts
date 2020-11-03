@@ -1,7 +1,7 @@
 import KanbanDB from "kanbandb/dist/KanbanDB";
 
-import service from "./TaskService";
-import { cards, tasks } from "../testData";
+import service, { TaskService } from "./TaskService";
+import { cards, tasks, cardToCompare, taskToCompare } from "../testData";
 import { Category } from "../types";
 
 jest.mock("kanbandb/dist/KanbanDB");
@@ -68,20 +68,42 @@ describe("TaskService", () => {
   });
   it("should update a task", async () => {
     const testTask = tasks[0];
-    mockedDb.updateCardById.mockResolvedValue(Promise.resolve(true));
     const param = {
       content: testTask.content,
       name: testTask.name,
       status: testTask.status,
       priority: testTask.priority,
     };
+    mockedDb.updateCardById.mockResolvedValue(Promise.resolve(true));
+    mockedDb.getCardById.mockResolvedValue(
+      Promise.resolve({
+        id: "id",
+        name: testTask.name,
+        description: testTask.content,
+        status: testTask.status,
+        priority: testTask.priority,
+      })
+    );
     const result = await service.update("id", param);
-    expect(result).toBe(true);
+    expect(result).toEqual({
+      ...param,
+      id: "id",
+    });
     mockedDb.updateCardById.mockResolvedValue(Promise.resolve(false));
     const falseResult = await service.update("id", param);
-    expect(falseResult).toBe(false);
+    expect(falseResult).toBe(undefined);
     mockedDb.updateCardById.mockResolvedValue(Promise.reject("error"));
     const rejectedResult = await service.update("id", param);
-    expect(rejectedResult).toBe(false);
+    expect(rejectedResult).toBe(undefined);
+  });
+
+  it("should translate task to card", () => {
+    const card = TaskService.toCard(taskToCompare);
+    expect(card).toEqual(cardToCompare);
+  });
+
+  it("should translate card to task", () => {
+    const task = TaskService.toTask(cardToCompare);
+    expect(task).toEqual(taskToCompare);
   });
 });

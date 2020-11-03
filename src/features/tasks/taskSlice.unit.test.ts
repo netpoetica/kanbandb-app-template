@@ -1,4 +1,6 @@
 import reducer, {
+  updateTask,
+  updateTaskDetails,
   initialState,
   saveTask,
   deleteTask,
@@ -168,6 +170,27 @@ describe("features/tasks", () => {
         })
       ).toEqual(testState);
     });
+
+    it("should handle update task", () => {
+      const todoTask = todoTasks[0];
+      const updatedTask: Task = {
+        ...todoTask,
+        name: "enhancement",
+        content: "updated content",
+      };
+      const newInitialState: TasksState = JSON.parse(
+        JSON.stringify(initialState)
+      );
+      newInitialState.records[todoTask.status].tasks.push(todoTask);
+      const testState = JSON.parse(JSON.stringify(initialState));
+      testState.records[todoTask.status].tasks.push(updatedTask);
+      expect(
+        reducer(newInitialState, {
+          type: updateTask.type,
+          payload: updatedTask,
+        })
+      ).toEqual(testState);
+    });
   });
   describe("asyncActions", () => {
     it("should save a task and dispatch necessary state change", async () => {
@@ -293,6 +316,28 @@ describe("features/tasks", () => {
       expect(mockedService.remove).toHaveBeenCalledWith(task.id);
       await waitFor(() => {
         expect(dispatch).toHaveBeenCalledWith(removeTask(task));
+      });
+    });
+    it("updates task details", async () => {
+      const task = todoTasks[0];
+      const dispatch = jest.fn();
+      const updatedTask: Task = {
+        ...task,
+        content: "updated content",
+        name: "bug",
+      };
+      const state = (): { tasks: TasksState } => ({
+        tasks: initialState,
+      });
+      mockedService.update.mockResolvedValueOnce(Promise.resolve(updatedTask));
+      const method = updateTaskDetails(updatedTask);
+      method(dispatch, state, {});
+      expect(mockedService.update).toHaveBeenCalledWith(
+        updatedTask.id,
+        updatedTask
+      );
+      await waitFor(() => {
+        expect(dispatch).toHaveBeenCalledWith(updateTask(updatedTask));
       });
     });
   });

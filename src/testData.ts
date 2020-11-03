@@ -98,3 +98,13 @@ export const doneBoard: Board = {
   tasks: doneTasks,
 };
 export const completeBoards: Board[] = [todoBoard, inProgressBoard, doneBoard];
+
+export const cardToCompare: Partial<Card> = {
+  id: tasks[0].id,
+  name: tasks[0].name,
+  description: tasks[0].content,
+  priority: tasks[0].priority as number,
+  status: tasks[0].status,
+};
+
+export const taskToCompare: Partial<Task> = tasks[0];

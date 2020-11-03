@@ -10,7 +10,6 @@ export type BoardDestination = {
 };
 
 export type TasksState = {
-  activeTask?: Task["id"];
   records: {
     [key in Board["id"]]: Omit<Board, "id">;
   };
@@ -124,20 +123,6 @@ export const tasksSlice = createSlice({
         board.tasks = [...board.tasks, payload];
       }
     },
-    // changeActiveTask: (state, action: PayloadAction<Task["id"]>): void => {
-    //   const { records } = state;
-    //   const { payload } = action;
-    //   // TODO: make this more generic
-    //   const tasks = [
-    //     ...records.TODO.tasks,
-    //     ...records.DOING.tasks,
-    //     ...records.DONE.tasks,
-    //   ];
-    //   const find = tasks.find((x) => x.id === payload);
-    //   if (find) {
-    //     state.activeTask = find.id;
-    //   }
-    // },
     updateTask: (state, action: PayloadAction<Task>): void => {
       const { records } = state;
       const { payload } = action;

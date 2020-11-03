@@ -131,17 +131,20 @@ describe("features/Tasks", () => {
     const dispatch = jest.fn();
     const deleteFn = jest.fn();
     const method = renderCard(dispatch, deleteFn);
+    const store = createNewStore();
     const { getByTestId } = render(
-      <DragDropContext onDragEnd={jest.fn()}>
-        <Droppable droppableId="test">
-          {(provided): React.ReactElement => (
-            <div ref={provided.innerRef} {...provided.droppableProps}>
-              {method(todoTasks[0], 0)}
-              {provided.placeholder}
-            </div>
-          )}
-        </Droppable>
-      </DragDropContext>
+      <Provider store={store}>
+        <DragDropContext onDragEnd={jest.fn()}>
+          <Droppable droppableId="test">
+            {(provided): React.ReactElement => (
+              <div ref={provided.innerRef} {...provided.droppableProps}>
+                {method(todoTasks[0], 0)}
+                {provided.placeholder}
+              </div>
+            )}
+          </Droppable>
+        </DragDropContext>
+      </Provider>
     );
     const card = getByTestId("card");
     expect(card).toBeInTheDocument();

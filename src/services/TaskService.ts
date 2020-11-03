@@ -27,13 +27,7 @@ export class TaskService {
     const db = await this.fetchDb();
     try {
       const cards = (await db.getCards()) as Card[];
-      return cards.map((x) => ({
-        id: x.id,
-        content: x.description,
-        name: x.name as Category,
-        status: x.status,
-        priority: x.priority,
-      }));
+      return cards.map(TaskService.toTask) as Task[];
     } catch (e) {
       return [];
     }
@@ -47,12 +41,7 @@ export class TaskService {
         status: "TODO",
       });
       const newCard = (await db.getCardById(id)) as Card;
-      return {
-        content: newCard.description,
-        id: newCard.id,
-        name: newCard.name as Category,
-        status: newCard.status,
-      };
+      return TaskService.toTask(newCard) as Task;
     } catch (e) {
       return undefined;
     }
@@ -74,32 +63,40 @@ export class TaskService {
   ): Promise<Task | undefined> {
     const db = await this.fetchDb();
     try {
-      console.log(partialTask);
-      const result = await db.updateCardById(id, {
-        ...(partialTask.name ? { name: partialTask.name } : undefined),
-        ...(partialTask.content
-          ? { description: partialTask.content }
-          : undefined),
-        ...(partialTask.status ? { status: partialTask.status } : undefined),
-        ...(partialTask.priority
-          ? { priority: partialTask.priority }
-          : undefined),
-      });
+      const card = TaskService.toCard(partialTask) as Card;
+      const result = await db.updateCardById(id, card);
       if (result) {
-        const card = await db.getCardById(id);
-        if (card)
-          return {
-            id: card.id,
-            content: card.description,
-            name: card.name,
-            status: card.status,
-            priority: card.priority,
-          };
+        const updatedCard = (await db.getCardById(id)) as Card;
+        if (updatedCard) return TaskService.toTask(updatedCard) as Task;
       }
       return undefined;
     } catch (e) {
       return undefined;
     }
+  }
+
+  static toCard(task: Partial<Task>): Partial<Card> {
+    return {
+      ...(task.id ? { id: task.id } : undefined),
+      ...(task.name ? { name: task.name } : undefined),
+      ...(task.content ? { description: task.content } : undefined),
+      ...(task.status ? { status: task.status } : undefined),
+      ...(task.priority || task.priority === 0
+        ? { priority: task.priority }
+        : undefined),
+    };
+  }
+
+  static toTask(card: Partial<Card>): Partial<Task> {
+    return {
+      ...(card.id ? { id: card.id } : undefined),
+      ...(card.name ? { name: card.name as Category } : undefined),
+      ...(card.description ? { content: card.description } : undefined),
+      ...(card.status ? { status: card.status } : undefined),
+      ...(card.priority || card.priority === 0
+        ? { priority: card.priority }
+        : undefined),
+    };
   }
 }
 

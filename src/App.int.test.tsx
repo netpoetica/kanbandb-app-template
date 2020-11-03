@@ -1,5 +1,11 @@
 import React from "react";
-import { render, fireEvent, cleanup, within } from "@testing-library/react";
+import {
+  render,
+  fireEvent,
+  cleanup,
+  within,
+  waitFor,
+} from "@testing-library/react";
 import { Provider } from "react-redux";
 import {
   mockGetComputedSpacing,
@@ -13,6 +19,7 @@ import { createNewStore } from "./store";
 import { loadDataForTest } from "./testUtils";
 import service from "./services/TaskService";
 import App from "./App";
+import { defaultCategoryColors } from "./config";
 
 service.entityName = "test-tasks";
 
@@ -53,7 +60,7 @@ describe("App", () => {
     const tasks = await service.fetchAll();
     const cards = await findAllByTestId("card");
     tasks.forEach((task) => {
-      const card = cards.find((x) => x.dataset.cardId === task.id);
+      const card = cards.find((x: HTMLElement) => x.dataset.cardId === task.id);
       expect(card).toBeDefined();
     });
     expect(cards.length).toBe(tasks.length);
@@ -76,7 +83,7 @@ describe("App", () => {
     const task = tasks[2];
     const { findAllByTestId } = await renderApp();
     const deleteButtons = await findAllByTestId("deleteButton");
-    deleteButtons.forEach((btn) => {
+    deleteButtons.forEach((btn: HTMLButtonElement) => {
       if (btn.parentElement?.dataset.cardId === task.id) {
         fireEvent.click(btn);
       }
@@ -136,6 +143,50 @@ describe("App", () => {
         .sort((a, b) => a.priority! - b.priority!)
         .map((x) => x.id);
       expect(newOrder).toEqual(reorderedTasks);
+    }
+  });
+
+  it("should be able edit a task", async () => {
+    await loadDataForTest();
+    const { findAllByTestId } = await renderApp();
+    const cards = await findAllByTestId("card");
+    const card = cards[0];
+    const id = card.dataset.cardId;
+    const editButton = within(card).getByTestId("editButton");
+    fireEvent.click(editButton);
+
+    const { getByTestId } = within(card);
+    await waitFor(() => {
+      const categorySelect = getByTestId("categorySelect") as HTMLSelectElement;
+      const textInput = getByTestId("inputText");
+      const saveButton = getByTestId("confirmUpdateButton");
+
+      expect(categorySelect).toBeInTheDocument();
+      expect(textInput).toBeInTheDocument();
+      expect(saveButton).toBeInTheDocument();
+      if (categorySelect && textInput && saveButton) {
+        fireEvent.change(textInput, { target: { value: "updateText" } });
+        fireEvent.change(categorySelect, {
+          target: { value: defaultCategoryColors[3].label },
+        });
+        expect((textInput as HTMLInputElement).value).toBe("updateText");
+        expect(categorySelect.value).toBe(defaultCategoryColors[3].label);
+        fireEvent.click(saveButton);
+      }
+    });
+
+    await waitFor(() => {
+      const content = getByTestId("content");
+      const category = getByTestId("category");
+      expect(content).toHaveTextContent("updateText");
+      expect(category).toHaveTextContent(defaultCategoryColors[3].label);
+    });
+
+    const refetchedTasks = await service.fetchAll();
+    const refetchTask = refetchedTasks.find((x) => x.id === id);
+    if (refetchTask) {
+      expect(refetchTask.content).toBe("updateText");
+      expect(refetchTask.name).toBe(defaultCategoryColors[3].label);
     }
   });
 });

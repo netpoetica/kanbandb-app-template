@@ -60,6 +60,10 @@
     "stylelint-config-standard": "^20.0.0",
     "typescript": "^4.0.3"
   },
+  "resolutions": {
+  "**/@typescript-eslint/eslint-plugin": "^4.6.1",
+  "**/@typescript-eslint/parser": "^4.6.1"
+  },
   "jest": {
     "collectCoverageFrom": [
       "src/**/*.{ts,tsx}",
@@ -69,7 +73,11 @@
       "!src/decs.d.ts",
       "!src/react-app-env.d.ts",
       "!src/types.ts",
-      "!src/components/index.ts"
+      "!src/components/index.ts",
+      "!src/config.ts",
+      "!src/store.ts",
+      "!src/testData.ts",
+      "!src/testUtils.ts"
     ]
   }
 }
