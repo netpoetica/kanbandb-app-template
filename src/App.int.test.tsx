@@ -122,7 +122,9 @@ describe("App", () => {
     const { getByText, makeGetDragEl, findAllByTestId } = await renderApp();
     const todoTasks = tasks.filter((x) => x.status === "TODO");
     const cardLists = await findAllByTestId("cardList");
-    const todoList = cardLists.find((x) => x.dataset.rbdDroppableId === "TODO");
+    const todoList = cardLists.find(
+      (x: HTMLElement) => x.dataset.rbdDroppableId === "TODO"
+    );
     if (todoList) {
       const cards = await within(todoList).findAllByTestId("card");
       expect(cards.length).toBe(todoTasks.length);

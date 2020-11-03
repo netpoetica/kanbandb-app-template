@@ -43,10 +43,6 @@
     button[class="deleteBtn"] {
       display: block;
     }
-
-    button[class="editBtn"] {
-      visibility: visible;
-    }
   }
 }
 
@@ -69,6 +65,12 @@
     font-size: small;
     font-weight: 600;
     cursor: pointer;
+  }
+
+  &:hover {
+    button[class="editBtn"] {
+      visibility: visible;
+    }
   }
 }
 
