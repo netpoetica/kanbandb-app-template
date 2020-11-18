@@ -16,20 +16,19 @@ Note: If anything isn't specifically called out here, feel free to be as inventi
 
 Have fun!
 
-
 ### Task
 
-Create a Kanban Board application in React using this template, which is itself based on a `create-react-app` default template, that meets the below criteria. We have provided a mock up of the look and feel of the application atop this git repo. 
+Create a Kanban Board application in React using this template, which is itself based on a `create-react-app` default template, that meets the below criteria. We have provided a mockup and will evaluate your ability to match this design to the best of your ability, as is feasible. A front-end developer on our team will be expected to be passionate about the visual design as well as efficient implementation.
 
 You can find instructions and source code for `KanbanDB` [here on Github](https://github.com/netpoetica/KanbanDB#kanbandb). This is a "fake" database that uses local storage to emulate something like an [ORM](https://en.wikipedia.org/wiki/Object-relational_mapping), which you can use to perform CRUD operations on Kanban tasks.
 
-1. Fork this repo on Github
-1. There should be three columns with headers: Todo, In Progress, and Done
-1. Use KanbanDB to perform all "database" operations (KanbanDB is a fake database that uses localStorage, but emulates asynchronocity of a real client, like Firebase)
-1. Cards should have a title/name, a description, and a status
-1. The user should be able to change the status of a card between `TODO`, `IN_PROGRESS`, and `DONE`, and changing the status should cause them to render in their respective columns (i.e. all cards with `TODO` status should be in column with Todo header)
-1. There should be an Add button that lets you add a new card to the board. Whichever status is chosen, it should show up on that board.
-1. Each card should have a delete button which deletes just that card
+* Fork this repo on Github
+* There should be three columns with headers: Todo, In Progress, and Done
+* Use KanbanDB to perform all "database" operations (KanbanDB is a fake database that uses localStorage, but emulates asynchronocity of a real client, like Firebase)
+* Cards should have a title/name, a description, and a status
+* The user should be able to change the status of a card between Todo, In Progress, and Done, and changing the status should cause them to render in their respective columns (i.e. all cards with `TODO` status should be in column with Todo header)
+* There should be an Add button that lets you add a new card to the board. Whichever status is chosen, it should show up on that board.
+* Each card should have a delete button which deletes just that card
 
 BONUS: A card can be edited and saved (`.updateCard()`).
 
