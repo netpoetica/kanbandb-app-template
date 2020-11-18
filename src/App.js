@@ -16,7 +16,7 @@ async function initialize() {
   instance.addCard({
     name: 'Test',
     description: 'Test',
-    status: 'TODO'
+    status: 'IN_PROGRESS'
   });
 }
 
