@@ -1,17 +1,23 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
-import KanbanDB from 'kanbandb/dist/KanbanDB';
 
-function initialize() {
+import KanbanDB from 'kanbandb';
+
+async function initialize() {
   /**
+   * Use KanbanDB like so (but you might want to move it) - types are provided
+   * by jsconfig.json, which will utilize d.ts files and give you autocompletion for
+   * KanbanDB, in Visual Studio Code, if that is your preferred IDE.
    * 
-   * Use KanbanDB like so (but you might want to move it) - types are provided:
-   * 
+   * This code (initialize function) is for demonstration only.
    */
-
-  KanbanDB.connect();
-
+  const instance = await KanbanDB.connect(null);
+  instance.addCard({
+    name: 'Test',
+    description: 'Test',
+    status: 'TODO'
+  });
 }
 
 function App() {
