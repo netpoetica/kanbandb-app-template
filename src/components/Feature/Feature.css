@@ -1,7 +1,9 @@
 .feature{
+    position: relative;
     width: 100%;
     /* background-color: green; */
     height: 100%;
+    top:20px;
 }
 
 
@@ -11,18 +13,7 @@
     text-align: center;
 }
 
-.middle{
-    
-    /* border-top:0px; */
-    /* border-bottom: 0px; */
-    border-left: 3px solid;
-    /* border-left-color: linear-gradient(top, #FF5A00, #FFAE00); */
-    border-right:3px solid;
-    /* border-image :linear-gradient(top, #FF5A00 0%, #FFAE00 100%) */
-    /* border-right-color:linear-gradient(top, #FF5A00, #FFAE00); */
-    /* border-color:linear-gradient(left, #FF5A00, #FFAE00); */
-    /* border-right:3px solid black; */
-}
+ 
 
 .feature__cardContainer{
    

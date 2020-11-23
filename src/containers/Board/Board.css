@@ -1,7 +1,8 @@
 .board{
     display: flex;
     justify-content: space-around;
-    /* height: 80vh; */
+    height: 90vh;
     width: 100%;
-    background-color: rgb(232, 249, 252);
+    /* height: 100vh; */
+    background-color: rgb(239, 245, 247);
 }

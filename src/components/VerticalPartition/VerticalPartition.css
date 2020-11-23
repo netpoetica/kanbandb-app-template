@@ -1,0 +1,6 @@
+.verticalLine{
+    height: inherit;
+    width: 10px;
+    color:rgb(0, 0, 128);
+    background-image: linear-gradient(to bottom,#33009900 10%,#33009933 100%);
+}
