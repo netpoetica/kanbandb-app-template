@@ -1,0 +1,16 @@
+.addCard{
+    
+    width: 90%;
+    height:75px;
+    background-color: white;
+    border-radius: 5px;
+    box-shadow:0px 3px 10px 1px #888888 ;
+    position: absolute;
+    /* margin: 0px auto; */
+    display: flex;
+    /* flex-direction: row; */
+    bottom:30px;
+    align-items: center;
+    /* padding: 0px 5px; */
+    /* z-index: -1; */
+}

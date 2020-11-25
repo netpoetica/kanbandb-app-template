@@ -1,22 +1,49 @@
-
+// import initalize from '../KabanDB/index';
 import KanbanDB from 'kanbandb';
 
-async function initialize() {
-  /**
-   * Use KanbanDB like so (but you might want to move it) - types are provided
-   * by jsconfig.json, which will utilize d.ts files and give you autocompletion for
-   * KanbanDB, in Visual Studio Code, if that is your preferred IDE.
-   * 
-   * This code (initialize function) is for demonstration only.
-   */
-  const instance = await KanbanDB.connect(null);
-  instance.addCard({
-    name: 'Test',
-    description: 'Test',
-    status: 'IN_PROGRESS'
-  });
-  console.log(instance);
+async function KabanService () {
+    
+    const db = await KanbanDB.connect(null);
+    
+
+
+
+    db.addCard({
+        name: 'Test',
+        description: 'Test',
+        status: 'IN_PROGRESS'
+      });
+      db.addCard({
+        name: 'Bug',
+        description: 'Bugging me',
+        status: 'DONE'
+      });
+      db.addCard({
+        name: 'Refactor',
+        description: 'Bugging me',
+        status: 'TODO'
+      });
+      db.addCard({
+        name: 'Refactor Bug',
+        description: 'Bugging me',
+        status: 'TODO'
+      });
+
+
+    //  function getCardsByStatus(status){ 
+    //   return  db.getCardsByStatusCodes([`${status}`]);
+    // }
+
+
+    // function getCardById(id){
+    //    return db.getCardById(id);
+    // }
+
+
+  
+
+    // return { getCardsByStatus , getCardById };
+    return {db}
 }
 
-
-export default initialize;
+export default KabanService;

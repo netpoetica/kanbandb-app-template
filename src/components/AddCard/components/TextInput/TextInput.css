@@ -1,0 +1,15 @@
+.textInput {
+    box-sizing: border-box;
+    height: 40px;
+    flex:3;
+    background-color: rgb(235, 235, 235);
+    color: grey;
+    margin: 0px 20px;
+    border-radius: 5px;
+    padding: 0px 30px;
+    border:0px;
+}
+
+.textInput:active{
+    outline: none;
+}

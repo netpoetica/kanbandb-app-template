@@ -4,6 +4,7 @@
     /* background-color: green; */
     height: 100%;
     top:20px;
+  
 }
 
 
@@ -16,5 +17,9 @@
  
 
 .feature__cardContainer{
-   
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* background-color: pink; */
+    height: inherit;
 }
