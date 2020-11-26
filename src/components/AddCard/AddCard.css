@@ -1,30 +1,23 @@
-.addCard__container{
-    
-   
-    height:80px;
-    background-color: white;
-    border-radius: 5px;
-    /* box-shadow:0px 3px 10px 1px #c3c3c3ff ; */
-    box-shadow: 0px 5px 10px 3px #c3c3c3ff;
-    position: relative;
-    /* margin: 0px auto; */
-    display: flex;
-    /* flex-direction: row; */
-    align-items: center;
-    /* padding: 0px 5px; */
-    /* z-index: -1; */
+.addCard__container {
+  height: 80px;
+  background-color: white;
+  border-radius: 5px;
+  /* box-shadow:0px 3px 10px 1px #c3c3c3ff ; */
+  box-shadow: 0px 5px 10px 3px #c3c3c3ff;
+  position: relative;
+  display: flex;
+  align-items: center;
 }
-.addCard{
-    position: absolute;
-    bottom:-40px;
-    width: 90%;
-   
+.addCard {
+  position: absolute;
+  bottom: -40px;
+  width: 90%;
 }
 
-.false{
-    display: none;
+.false {
+  display: none;
 }
 
-.true{
-    display:block;
+.true {
+  display: block;
 }
