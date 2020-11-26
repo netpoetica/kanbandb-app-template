@@ -1,7 +1,6 @@
 .deleteCard__holder{
-    
-    height: 80px;
-    width: 80px;
+   height: inherit;
+   width: inherit;
     position: relative;
     background-color: red;
     display: flex;
@@ -26,9 +25,28 @@
 
 }
 .deleteCard{
-    
+    height: 80px;
+    width: 80px;
     position: absolute;
     bottom:-40px;
     
     /* display: none; */
+}
+
+.over{
+    height: 100px;
+    width: 100px;
+}
+
+.deleteCard__holder:hover{
+    height: 100px;
+    width: 100px;
+}
+
+.true{
+    display:block;
+}
+
+.false{
+    display:none;
 }

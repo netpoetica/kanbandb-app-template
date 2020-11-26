@@ -14,7 +14,9 @@ export default function Card (props){
                     onDragStart={(e) => props.ds(e, x.id)}
                     key={x.id}
                     className="card"
+                    // status={x.status}
                   >
+                  
                     <p className={"card__content"}>
                       {x.name} :{x.description}
                     </p>

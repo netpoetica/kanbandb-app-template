@@ -17,5 +17,13 @@
     position: absolute;
     bottom:-40px;
     width: 90%;
+   
+}
+
+.false{
     display: none;
+}
+
+.true{
+    display:block;
 }
