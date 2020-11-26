@@ -1,0 +1,23 @@
+.addCard__container {
+  height: 80px;
+  background-color: white;
+  border-radius: 5px;
+  /* box-shadow:0px 3px 10px 1px #c3c3c3ff ; */
+  box-shadow: 0px 5px 10px 3px #c3c3c3ff;
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+.addCard {
+  position: absolute;
+  bottom: -40px;
+  width: 90%;
+}
+
+.false {
+  display: none;
+}
+
+.true {
+  display: block;
+}

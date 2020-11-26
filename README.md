@@ -33,3 +33,26 @@ You can find instructions and source code for `KanbanDB` [here on Github](https:
 BONUS: A card can be edited and saved (`.updateCard()`).
 
 Note: This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+
+
+
+### Task completed
+
+Author: Abhijit Tambe
+
+Email: abhijit.tambe@hotmail.com
+
+Note: This application is not using any 3rd party modules like dnd, redux, redux-thunk. Its basic pure react application managing application state in main Board class component and passing necessary functions and states to other components by prop drilling.
+
+
+![todo-app](public/application-1.png)
+![todo-app](public/application-2.png)
+![todo-app](public/application-3.png)
+![todo-app](public/application-4.png)
+![todo-app](public/application-5.png)
+![todo-app](public/application-6.png)
+![todo-app](public/application-7.png)
+![todo-app](public/application-8.png)
+![todo-app](public/application-9.png)
+
+

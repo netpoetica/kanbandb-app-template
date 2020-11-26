@@ -1,0 +1,18 @@
+.textInput {
+  box-sizing: border-box;
+  height: 40px;
+  flex: 3;
+  background-color: rgb(239, 245, 247);
+  margin: 0px 20px;
+  border-radius: 5px;
+  padding: 0px 30px;
+  border: 0px;
+  font-size: 15px;
+}
+
+.textInput::placeholder {
+  color: rgb(175, 175, 175);
+}
+.textInput:focus {
+  outline-color: rgb(175, 175, 175);
+}

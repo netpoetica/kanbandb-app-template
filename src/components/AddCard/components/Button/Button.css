@@ -1,0 +1,27 @@
+.button {
+  box-sizing: border-box;
+  height: 40px;
+  width: 50px;
+  background-color: #12af76;
+  flex: 1;
+  margin: 0px 20px;
+  border-radius: 8px;
+  border: 0px;
+  cursor: pointer;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.button:focus {
+  outline: none;
+}
+
+.button > p {
+  font-size: medium;
+  font-weight: 600;
+}
+
+.button:active {
+  background-color: #008b58;
+}

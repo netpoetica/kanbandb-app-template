@@ -1,0 +1,45 @@
+.deleteCard__holder {
+  height: inherit;
+  width: inherit;
+  position: relative;
+  background-color: red;
+  display: flex;
+  border-radius: inherit;
+  justify-content: center;
+  align-items: center;
+  /* box-shadow: 0px 3px 10px 1px #888888; */
+  box-shadow: 0px 5px 10px 3px #c3c3c3ff;
+  font-size: inherit;
+}
+
+.deleteCard__holder > p {
+  font-size: inherit;
+  position: absolute;
+  bottom: -55px;
+  font-weight: 600;
+  color: white;
+  /* background-color: #888888; */
+}
+.deleteCard {
+  height: 80px;
+  width: 80px;
+  position: absolute;
+  bottom: -40px;
+  font-size: 60px;
+  border-radius: 50px;
+}
+
+.over {
+  height: 150px;
+  width: 150px;
+  font-size: 80px;
+  border-radius: 75px;
+}
+
+.true {
+  display: block;
+}
+
+.false {
+  display: none;
+}
