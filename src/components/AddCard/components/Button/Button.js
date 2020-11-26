@@ -4,7 +4,7 @@ const  Button = ({handleClick })=>{
 
   
     return (
-        <button type="button" className="button" onClick={handleClick }><p>Add New</p>  </button>        
+        <button type="button" className="button" onClick={handleClick }><p>ADD NEW</p>  </button>        
     )
 }
 

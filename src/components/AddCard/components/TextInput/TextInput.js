@@ -1,10 +1,10 @@
 import React from 'react';
 import './TextInput.css'
 
-const TextInput = ({handleChange}) =>{
+const TextInput = ({handleChange,inputValue}) =>{
     return (
-        <input type="text" name ="cardData"
-        placeholder= {"eg like this"} onChange ={handleChange}
+      <input type="type" name ="cardData" value={inputValue}
+        placeholder= {"e.g. Test: give me an interview"} onChange ={handleChange}
          className = "textInput">
         </input>
     )
