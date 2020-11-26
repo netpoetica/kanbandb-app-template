@@ -105,10 +105,9 @@ export default function Feature (props){
     return (
         
         <div className={`feature ${props.section}`}   >
-            <h2 className={`feature__title`}>{props.title}</h2>
+            <h3 className={`feature__title`}>{props.title}</h3>
                 <div className="feature__cardContainer"   onDragOver={handleDragOver} onDrop={(e)=>handleDrop(e,props.status)}>
                 <Card   section={props.section}  data = {props.arr} ds={(e,name)=>handleDragStart(e,name)} />
-                
                 </div>
         </div>
     )

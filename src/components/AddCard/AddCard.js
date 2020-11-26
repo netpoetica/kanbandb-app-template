@@ -31,8 +31,10 @@ const  AddCard = ({db,update})=>{
 
     return (
         <div className="addCard">
+        <div className="addCard__container">
         <TextInput handleState = {handleChange}/>
         <Button handleClick = {clicked}/>
+        </div>
         </div>
     )
 } 

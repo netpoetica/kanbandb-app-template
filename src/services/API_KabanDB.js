@@ -1,12 +1,8 @@
-// import initalize from '../KabanDB/index';
 import KanbanDB from 'kanbandb';
 
 async function KabanService () {
     
     const db = await KanbanDB.connect(null);
-    
-
-
 
     db.addCard({
         name: 'Test',
@@ -29,21 +25,7 @@ async function KabanService () {
         status: 'TODO'
       });
 
-
-    //  function getCardsByStatus(status){ 
-    //   return  db.getCardsByStatusCodes([`${status}`]);
-    // }
-
-
-    // function getCardById(id){
-    //    return db.getCardById(id);
-    // }
-
-
-  
-
-    // return { getCardsByStatus , getCardById };
-    return {db}
+    return db;
 }
 
 export default KabanService;
