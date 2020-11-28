@@ -1,5 +1,7 @@
 import React from "react";
+
 import "./Card.css";
+import CardButton from "./components/Button/CardButton";
 
 export default function Card(props) {
   return (
@@ -17,6 +19,10 @@ export default function Card(props) {
               <p>
                 {x.name}: {x.description}
               </p>
+              <div className={`card__actionContainer `}>
+              <CardButton actionName={"Edit"} buttonColor={'yellow'}/>
+              <CardButton actionName={"X"} buttonColor={"red"}/>
+              </div>
             </div>
           );
         })}

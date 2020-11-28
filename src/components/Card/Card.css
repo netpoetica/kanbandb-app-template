@@ -12,6 +12,7 @@
   justify-content: start;
   cursor: pointer;
   color: white;
+  position: relative;
 }
 
 .card > p {
@@ -22,4 +23,33 @@
   padding: 2px;
   text-transform: capitalize;
   margin: 0px;
+}
+
+
+.card__actionContainer{
+  /* background-color: red;
+  display: flex;
+  justify-content: center;
+  align-items: center; */
+  position: absolute;
+  justify-content: space-between;
+  background-color: red;
+  height: 20px;
+  width: 100px;
+  display: none;
+  top: -20px;
+  right: 0px;
+}
+
+.card:hover .card__actionContainer{
+  display: flex;
+}
+
+
+.true{
+  /* display: none; */
+  /* background-color: pink; */
+}
+.false{
+  /* display: flex; */
 }

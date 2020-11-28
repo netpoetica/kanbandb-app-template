@@ -18,6 +18,7 @@ export default class Board extends Component {
       addCard: true,
       deleteCard: false,
       input: "",
+      options:false,
     };
     this.update = this.update.bind(this);
     this.handleDragStartCard = this.handleDragStartCard.bind(this);
@@ -75,6 +76,12 @@ export default class Board extends Component {
   }
 
   handleDragStartCard = async (e, id) => {
+    console.log('drag start card-----------------------')
+    // this.setState({
+    //   ...this.state,
+    //   options:true
+    // })
+    
     e.persist();
     console.log("event target", e.target);
     this.setState({
@@ -82,7 +89,9 @@ export default class Board extends Component {
       node: e.target,
       addCard: false,
       deleteCard: true,
+      options:true
     });
+    console.log(this.state);
     setTimeout(() => {
       e.target.style.display = "none";
     }, 0);
@@ -175,6 +184,7 @@ export default class Board extends Component {
           status={"TODO"}
           handleDragStart={this.handleDragStartCard}
           handleDrop={this.handleDropCard}
+          options={this.state.options}
         />
 
         <VerticalPartition />
