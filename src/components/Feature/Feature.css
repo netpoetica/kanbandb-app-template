@@ -2,6 +2,7 @@
   position: relative;
   width: 100%;
   height: inherit;
+  /* background-color: red; */
 }
 
 .feature__title {
@@ -11,8 +12,11 @@
 }
 
 .feature__cardContainer {
+  box-sizing: content-box;
   display: flex;
   flex-direction: column;
   align-items: center;
-  height: 80vh;
+  min-height: 72vh;
+  /* background-color:pink; */
+  padding-bottom: 50px;
 }

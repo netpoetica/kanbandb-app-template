@@ -4,7 +4,6 @@ import VerticalPartition from "../../components/VerticalPartition/VerticalPartit
 import "./Board.css";
 import KabanService from "../../services/API_KabanDB";
 import AddCard from "../../components/AddCard/AddCard";
-import DeleteCard from "../../components/DeleteCard/DeleteCard";
 
 export default class Board extends Component {
   constructor(props) {
@@ -16,20 +15,21 @@ export default class Board extends Component {
       DONE: [],
       db: null,
       node: null,
-      addCard: true,
-      deleteCard: false,
+      // addCard: true,
+      // deleteCard: false,
       input: "",
-      options: false,
+      options: true,
     };
-    // this.update = this.update.bind(this);
+
     this.handleDragStartCard = this.handleDragStartCard.bind(this);
     this.handleDropCard = this.handleDropCard.bind(this);
-    this.handleChange = this.handleChange.bind(this);
+    this.handleChangeInput = this.handleChangeInput.bind(this);
     this.handleAddCard = this.handleAddCard.bind(this);
     // this.handleDropDeleteCard = this.handleDropDeleteCard.bind(this);
     this.handleAction = this.handleAction.bind(this);
     this.removeItem = this.removeItem.bind(this);
     this.addItem = this.addItem.bind(this);
+    this.updateItem = this.updateItem.bind(this);
   }
 
   async componentDidMount() {
@@ -55,35 +55,6 @@ export default class Board extends Component {
     console.log("up");
   }
 
-  // async update() {
-  //   console.log("update");
-  //   try {
-  //     let data = await this.state.db.getCards();
-  //     this.setState({
-  //       ...this.state,
-  //       data,
-  //     });
-  //     console.log("data", data);
-  //     // if (data.length >= 1) {
-  //     //   let a = await this.state.db.getCardsByStatusCodes(["TODO"]);
-  //     //   let b = await this.state.db.getCardsByStatusCodes(["IN_PROGRESS"]);
-  //     //   let c = await this.state.db.getCardsByStatusCodes(["DONE"]);
-
-  //     //   this.setState({
-  //     //     ...this.state,
-  //     //     TODO:
-  //     //       a.length > 2 ? a.sort((a, b) => a.lastUpdated - b.lastUpdated) : a,
-  //     //     IN_PROGRESS:
-  //     //       b.length > 2 ? b.sort((a, b) => a.lastUpdated - b.lastUpdated) : b,
-  //     //     DONE:
-  //     //       c.length > 2 ? c.sort((a, b) => a.lastUpdated - b.lastUpdated) : c,
-  //     //   });
-  //     //   console.log(this.state);
-  //     // }
-  //   } catch (err) {
-  //     console.log(err.message);
-  //   }
-  // }
 
   handleDragStartCard = async (e, id) => {
     e.persist();
@@ -93,7 +64,7 @@ export default class Board extends Component {
       node: e.target,
       // addCard: false,
       // deleteCard: true,
-      options: true,
+      options: false,
     });
     console.log(this.state);
     setTimeout(() => {
@@ -113,7 +84,7 @@ export default class Board extends Component {
       let oldStatus = item.status;
       this.setState({
         ...this.state,
-        options: false,
+        options: true,
       });
 
       if (oldStatus !== status) {
@@ -123,8 +94,6 @@ export default class Board extends Component {
         if (update) {
           this.removeItem(oldStatus, id);
           this.addItem(status, updatedData);
-          // console.log("update", update);
-          // console.log(this.state);
         }
 
         // this.update();
@@ -138,7 +107,7 @@ export default class Board extends Component {
     }
   };
 
-  handleChange = (e) => {
+  handleChangeInput = (e) => {
     let data = e.target.value;
     this.setState({
       ...this.state,
@@ -200,11 +169,23 @@ export default class Board extends Component {
   //   }
   // };
 
-  handleAction = async (e, actionName, id, status) => {
-    console.log("handle action", e, actionName, status);
+  handleAction = async (e, actionName, id, status,title,description) => {
+    console.log("handle action", e, actionName, id,status,title,description);
     try {
-      if (actionName === "edit") {
-        console.log("need working");
+      if (actionName === "Edit") {
+        console.log("working");
+        const newName = prompt("Enter Title: ",title);
+        const newDescription = prompt("Enter Description : ",description);
+        if(newName && newDescription){
+        const update = await this.state.db.updateCardById(id,{name:newName,description:newDescription});
+        console.log(e,newName,newDescription,id);
+          let newData = await this.state.db.getCardById(id);
+          console.log('from db',newData);
+          this.updateItem(newData.status,id,newData);
+        }else{
+          return;
+        }
+       
       } else {
         const deleted = await this.state.db.deleteCardById(id);
         if (deleted) {
@@ -273,6 +254,45 @@ export default class Board extends Component {
     return;
   };
 
+  updateItem = (status, id, data) => {
+    console.log('update item reducer',status,id,data );
+    switch (status) {
+      case "TODO":
+        this.setState({
+          ...this.state,
+          TODO: this.state.TODO.map((x) => { if(x.id === id){ return data }
+            else{
+              return x;
+            }}),
+        });
+        break;
+      case "IN_PROGRESS":
+        this.setState({
+          ...this.state,
+          IN_PROGRESS: this.state.IN_PROGRESS.map((x) => { if(x.id === id){ return data }
+          else{
+            return x;
+          }}),
+      });
+        break;
+      case "DONE":
+        this.setState({
+          ...this.state,
+          DONE: this.state.DONE.map((x) => { if(x.id === id){ return data }
+          else{
+            return x;
+          }}),
+      });
+        break;
+      default:
+        return;
+    }
+    return;
+  };
+
+
+
+
   render() {
     return (
       <div className="board">
@@ -312,14 +332,9 @@ export default class Board extends Component {
 
         <AddCard
           handleClick={this.handleAddCard}
-          handleChange={this.handleChange}
-          addCard={this.state.addCard}
+          handleChangeInput={this.handleChangeInput}
           inputValue={this.state.input}
         />
-        {/* <DeleteCard
-          handleDropDeleteCard={this.handleDropDeleteCard}
-          deleteCard={this.state.deleteCard}
-        /> */}
       </div>
     );
   }

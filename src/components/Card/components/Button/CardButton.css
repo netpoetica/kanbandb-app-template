@@ -1,7 +1,16 @@
 
-.cardButton{
-    color: black;
-    width: 50px;
+.cardButton{ 
+    width: 40px;
     cursor: pointer;
-    /* text-align: center; */
+    border-radius: 6px;
+    border:1px solid silver;
+    color: navy;
+}
+
+.cardButton:focus{
+    outline: none;
+}
+
+.cardButton:active{
+    border: 1px solid black;
 }

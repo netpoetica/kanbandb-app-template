@@ -5,12 +5,11 @@ import TextInput from "./components/TextInput/TextInput";
 import "./AddCard.css";
 import { useState } from "react";
 
-const AddCard = ({ addCard, handleChange, handleClick, inputValue }) => {
+const AddCard = ({ handleChangeInput, handleClick, inputValue }) => {
   return (
-    // <div className={`addCard ${addCard}`}>
     <div className={`addCard`}>
       <div className="addCard__container">
-        <TextInput inputValue={inputValue} handleChange={handleChange} />
+        <TextInput inputValue={inputValue} handleChangeInput={handleChangeInput} />
         <Button handleClick={handleClick} />
       </div>
     </div>

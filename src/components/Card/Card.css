@@ -33,9 +33,9 @@
   align-items: center; */
   position: absolute;
   justify-content: space-between;
-  background-color: red;
+  /* background-color: red; */
   height: 20px;
-  width: 100px;
+  width: 100%;
   display: none;
   top: -20px;
   right: 0px;
@@ -46,10 +46,6 @@
 }
 
 
-.true{
-  display: none!important;
-  /* background-color: pink; */
-}
 .false{
-  /* display: flex!important; */
+  display: none!important;
 }
