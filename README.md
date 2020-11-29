@@ -54,5 +54,9 @@ Note: This application is not using any 3rd party modules like dnd, redux, redux
 ![todo-app](public/application-7.png)
 ![todo-app](public/application-8.png)
 ![todo-app](public/application-9.png)
+![todo-app](public/application-10.png)
+![todo-app](public/application-11.png)
+![todo-app](public/application-12.png)
+![todo-app](public/application-13.png)
 
 

@@ -21,7 +21,6 @@ export default function Feature(props) {
           ds={(e, name) => props.handleDragStart(e, name)}
           options={props.options}
           handleAction={props.handleAction}
-          // handleEdit={props.handleEdit}
         />
       </div>
     </div>

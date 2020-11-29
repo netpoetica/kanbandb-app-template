@@ -1,22 +1,27 @@
 .feature {
   position: relative;
   width: 100%;
-  height: inherit;
   /* background-color: red; */
+  display: flex;
+  flex-direction: column;
 }
 
 .feature__title {
+  flex:1;
+  max-height: 15px;
   padding: 10px;
   color: navy;
   text-align: center;
 }
 
 .feature__cardContainer {
+  flex:2;
+  position: relative;
   box-sizing: content-box;
   display: flex;
   flex-direction: column;
   align-items: center;
-  min-height: 72vh;
   /* background-color:pink; */
-  padding-bottom: 50px;
+  padding: 10px 5px 50px 5px;
+  
 }

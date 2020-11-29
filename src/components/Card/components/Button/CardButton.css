@@ -1,10 +1,14 @@
 
 .cardButton{ 
     width: 40px;
+    font-size:small;
+    font-weight: 700;
+    height: 20px;
     cursor: pointer;
     border-radius: 6px;
     border:1px solid silver;
-    color: navy;
+    color: white;
+    padding: 0px;
 }
 
 .cardButton:focus{

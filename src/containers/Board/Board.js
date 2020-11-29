@@ -10,31 +10,18 @@ export default class Board extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      data: [],
       TODO: [],
       IN_PROGRESS: [],
       DONE: [],
       db: null,
       node: null,
-      // addCard: true,
-      // deleteCard: false,
       input: "",
       options: true,
-      modalView:false,
-      currentTitle:"",
-      currentDescription:"",
-      currentId:""
+      modalView: false,
+      currentName: "",
+      currentDescription: "",
+      currentId: "",
     };
-
-    this.handleDragStartCard = this.handleDragStartCard.bind(this);
-    this.handleDropCard = this.handleDropCard.bind(this);
-    this.handleChangeInput = this.handleChangeInput.bind(this);
-    this.handleAddCard = this.handleAddCard.bind(this);
-    // this.handleDropDeleteCard = this.handleDropDeleteCard.bind(this);
-    this.handleAction = this.handleAction.bind(this);
-    this.removeItem = this.removeItem.bind(this);
-    this.addItem = this.addItem.bind(this);
-    this.updateItem = this.updateItem.bind(this);
   }
 
   async componentDidMount() {
@@ -44,7 +31,6 @@ export default class Board extends Component {
       console.log(await db.getCards());
       this.setState({
         ...this.state,
-        data: await db.getCards(),
         TODO: await db.getCardsByStatusCodes(["TODO"]),
         IN_PROGRESS: await db.getCardsByStatusCodes(["IN_PROGRESS"]),
         DONE: await db.getCardsByStatusCodes(["DONE"]),
@@ -60,15 +46,12 @@ export default class Board extends Component {
     console.log("up");
   }
 
-
   handleDragStartCard = async (e, id) => {
     e.persist();
     console.log("event target", e.target);
     this.setState({
       ...this.state,
       node: e.target,
-      // addCard: false,
-      // deleteCard: true,
       options: false,
     });
     console.log(this.state);
@@ -81,7 +64,6 @@ export default class Board extends Component {
 
   handleDropCard = async (e, status) => {
     e.persist();
-    // console.log("handle drop", e, status);
     try {
       let id = e.dataTransfer.getData("id");
       let item = await this.state.db.getCardById(id);
@@ -100,9 +82,6 @@ export default class Board extends Component {
           this.removeItem(oldStatus, id);
           this.addItem(status, updatedData);
         }
-
-        // this.update();
-        console.log("update called", this.state);
       } else {
         console.log("not updated", e.target);
         this.state.node.style.display = "flex";
@@ -145,10 +124,9 @@ export default class Board extends Component {
 
         if (newData) {
           this.addItem("TODO", newData);
-        }else{
+        } else {
           alert("error adding new Card");
         }
-       
       } else {
         alert("provide a valid input minimum 3 charactes separated with : ");
       }
@@ -157,57 +135,27 @@ export default class Board extends Component {
     }
   };
 
-  // handleDropDeleteCard = async (e, del) => {
-  //   try {
-  //     console.log(e, del);
-  //     let id = e.dataTransfer.getData("id");
-  //     let s = await this.state.db.deleteCardById(id);
-  //     console.log(id, s);
-  //     this.setState({
-  //       ...this.state,
-  //       addCard: true,
-  //       deleteCard: false,
-  //     });
-  //     this.update();
-  //   } catch (err) {
-  //     console.log(err.message);
-  //   }
-  // };
-
-  handleAction = async (e, actionName, id, status,title,description) => {
-    console.log("handle action", e, actionName, id,status,title,description);
+  handleAction = async (e, actionName, id, status, name, description) => {
+    console.log("handle action", e, actionName, id, status, name, description);
     try {
       if (actionName === "Edit") {
-        console.log("working");
         this.setState({
           ...this.state,
-          modalView:true,
-          currentTitle:title,
-          currentDescription:description,
-          currentId:id,
-        })
-        
-        // const newName = prompt("Enter Title: ",title);
-        // const newDescription = prompt("Enter Description : ",description);
-        // if(newName && newDescription){
-        // const update = await this.state.db.updateCardById(id,{name:newName,description:newDescription});
-        // console.log(e,newName,newDescription,id);
-        //   let newData = await this.state.db.getCardById(id);
-        //   console.log('from db',newData);
-        //   this.updateItem(newData.status,id,newData);
-        // }
-        // else{
-        //   return;
-        // }
-       
-      } else {
+          modalView: true,
+          currentName: name,
+          currentDescription: description,
+          currentId: id,
+        });
+      } else if (actionName === "X") {
         const deleted = await this.state.db.deleteCardById(id);
         if (deleted) {
           this.removeItem(status, id);
         }
         console.log(id, deleted, this.state);
+        console.log("from db", await this.state.db.getCards());
+      } else {
+        console.log("card action error");
       }
-      console.log("from db", await this.state.db.getCards());
     } catch (err) {
       console.log(err.message);
     }
@@ -241,7 +189,6 @@ export default class Board extends Component {
   };
 
   addItem = (status, updatedData) => {
-    // console.log('add here',status,updatedData,this.state.IN_PROGRESS);
     switch (status) {
       case "TODO":
         this.setState({
@@ -269,34 +216,43 @@ export default class Board extends Component {
   };
 
   updateItem = (status, id, data) => {
-    console.log('update item reducer',status,id,data );
+    console.log("update item reducer", status, id, data);
     switch (status) {
       case "TODO":
         this.setState({
           ...this.state,
-          TODO: this.state.TODO.map((x) => { if(x.id === id){ return data }
-            else{
+          TODO: this.state.TODO.map((x) => {
+            if (x.id === id) {
+              return data;
+            } else {
               return x;
-            }}),
+            }
+          }),
         });
         break;
       case "IN_PROGRESS":
         this.setState({
           ...this.state,
-          IN_PROGRESS: this.state.IN_PROGRESS.map((x) => { if(x.id === id){ return data }
-          else{
-            return x;
-          }}),
-      });
+          IN_PROGRESS: this.state.IN_PROGRESS.map((x) => {
+            if (x.id === id) {
+              return data;
+            } else {
+              return x;
+            }
+          }),
+        });
         break;
       case "DONE":
         this.setState({
           ...this.state,
-          DONE: this.state.DONE.map((x) => { if(x.id === id){ return data }
-          else{
-            return x;
-          }}),
-      });
+          DONE: this.state.DONE.map((x) => {
+            if (x.id === id) {
+              return data;
+            } else {
+              return x;
+            }
+          }),
+        });
         break;
       default:
         return;
@@ -304,37 +260,65 @@ export default class Board extends Component {
     return;
   };
 
-
-  handleCloseModal =() =>{
+  handleCloseModal = () => {
     this.setState({
       ...this.state,
-      modalView :false,
-    })
-  }
+      modalView: false,
+    });
+  };
 
-  handleSubmitModal = async(e)=>{
+  handleSubmitModal = async (e) => {
     e.preventDefault();
     e.persist();
-    // console.log({title:e.target.title.value,description:e.target.description.value})
-    try{  
-      const updateItem = await this.state.db.updateCardById(this.state.currentId,{name:e.target.title.value,description:e.target.description.value})
-      const updatedItem = await this.state.db.getCardById(this.state.currentId);
-      console.log('db',updatedItem);
-      this.updateItem(updatedItem.status,this.state.currentId,updatedItem);
-    }catch(err){
-      console.log(err.message)
-    }
-    this.setState({
-      ...this.state,
-      currentTitle:"",
-      currentDescription:"",
-      currentId:"",
-      modalView:false
-    })
-    console.log(this.state);
-    console.log(e.target.title.value);
-  } 
 
+    try {
+      const updatedName = e.target.name.value;
+      const updatedDescription = e.target.description.value;
+      console.log(updatedName, updatedDescription);
+      if (
+        updatedName &&
+        updatedDescription &&
+        (updatedName !== this.state.currentName ||
+          updatedDescription !== this.state.currentDescription)
+      ) {
+        const updateItem = await this.state.db.updateCardById(
+          this.state.currentId,
+          { name: updatedName, description: updatedDescription }
+        );
+        if (updateItem) {
+          const updatedItem = await this.state.db.getCardById(
+            this.state.currentId
+          );
+          console.log("db", updatedItem);
+          this.updateItem(
+            updatedItem.status,
+            this.state.currentId,
+            updatedItem
+          );
+        } else {
+          console.log("unable to update the values in database");
+        }
+        this.setState({
+          ...this.state,
+          currentName: "",
+          currentDescription: "",
+          currentId: "",
+          modalView: false,
+        });
+        console.log(this.state);
+        console.log(e.target.name.value);
+      } else if (
+        updatedName === this.state.currentName &&
+        updatedDescription === this.state.currentDescription
+      ) {
+        alert("enter different values to update");
+      } else {
+        alert("enter a valid input");
+      }
+    } catch (err) {
+      console.log(err.message);
+    }
+  };
 
   render() {
     return (
@@ -379,9 +363,14 @@ export default class Board extends Component {
           inputValue={this.state.input}
         />
 
-         {this.state.modalView && <Modal handleCloseModal={this.handleCloseModal} name={this.state.currentTitle}
-            description={this.state.currentDescription } handleSubmitModal={this.handleSubmitModal} 
-         />}
+        {this.state.modalView && (
+          <Modal
+            handleCloseModal={this.handleCloseModal}
+            name={this.state.currentName}
+            description={this.state.currentDescription}
+            handleSubmitModal={this.handleSubmitModal}
+          />
+        )}
       </div>
     );
   }
