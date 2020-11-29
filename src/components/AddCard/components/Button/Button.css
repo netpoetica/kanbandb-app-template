@@ -9,17 +9,11 @@
   border: 0px;
   cursor: pointer;
   color: white;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  font-size: medium;
+  font-weight: 600;
 }
 .button:focus {
   outline: none;
-}
-
-.button > p {
-  font-size: medium;
-  font-weight: 600;
 }
 
 .button:active {

@@ -5,14 +5,14 @@ import CardButton from "./components/Button/CardButton";
 
 export default function Card(props) {
 
-const [editMode, setEditMode] = useState(false);
+// const [editMode, setEditMode] = useState(false);
 
-  const handleClick= (e,name,description,id)=>{
-    setEditMode(true);
-    const newName = prompt("enter the title/ name",name);
-    const newDescription = prompt("enter the description",description);
-    console.log(newName,newDescription);
-  }
+  // const handleClick= (e,name,description,id)=>{
+  //   setEditMode(true);
+  //   const newName = prompt("enter the title/ name",name);
+  //   const newDescription = prompt("enter the description",description);
+  //   console.log(newName,newDescription);
+  // }
 
   return (
     <>

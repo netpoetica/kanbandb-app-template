@@ -4,6 +4,7 @@ import VerticalPartition from "../../components/VerticalPartition/VerticalPartit
 import "./Board.css";
 import KabanService from "../../services/API_KabanDB";
 import AddCard from "../../components/AddCard/AddCard";
+import Modal from "../../components/Modal/Modal";
 
 export default class Board extends Component {
   constructor(props) {
@@ -19,6 +20,10 @@ export default class Board extends Component {
       // deleteCard: false,
       input: "",
       options: true,
+      modalView:false,
+      currentTitle:"",
+      currentDescription:"",
+      currentId:""
     };
 
     this.handleDragStartCard = this.handleDragStartCard.bind(this);
@@ -174,17 +179,26 @@ export default class Board extends Component {
     try {
       if (actionName === "Edit") {
         console.log("working");
-        const newName = prompt("Enter Title: ",title);
-        const newDescription = prompt("Enter Description : ",description);
-        if(newName && newDescription){
-        const update = await this.state.db.updateCardById(id,{name:newName,description:newDescription});
-        console.log(e,newName,newDescription,id);
-          let newData = await this.state.db.getCardById(id);
-          console.log('from db',newData);
-          this.updateItem(newData.status,id,newData);
-        }else{
-          return;
-        }
+        this.setState({
+          ...this.state,
+          modalView:true,
+          currentTitle:title,
+          currentDescription:description,
+          currentId:id,
+        })
+        
+        // const newName = prompt("Enter Title: ",title);
+        // const newDescription = prompt("Enter Description : ",description);
+        // if(newName && newDescription){
+        // const update = await this.state.db.updateCardById(id,{name:newName,description:newDescription});
+        // console.log(e,newName,newDescription,id);
+        //   let newData = await this.state.db.getCardById(id);
+        //   console.log('from db',newData);
+        //   this.updateItem(newData.status,id,newData);
+        // }
+        // else{
+        //   return;
+        // }
        
       } else {
         const deleted = await this.state.db.deleteCardById(id);
@@ -291,6 +305,35 @@ export default class Board extends Component {
   };
 
 
+  handleCloseModal =() =>{
+    this.setState({
+      ...this.state,
+      modalView :false,
+    })
+  }
+
+  handleSubmitModal = async(e)=>{
+    e.preventDefault();
+    e.persist();
+    // console.log({title:e.target.title.value,description:e.target.description.value})
+    try{  
+      const updateItem = await this.state.db.updateCardById(this.state.currentId,{name:e.target.title.value,description:e.target.description.value})
+      const updatedItem = await this.state.db.getCardById(this.state.currentId);
+      console.log('db',updatedItem);
+      this.updateItem(updatedItem.status,this.state.currentId,updatedItem);
+    }catch(err){
+      console.log(err.message)
+    }
+    this.setState({
+      ...this.state,
+      currentTitle:"",
+      currentDescription:"",
+      currentId:"",
+      modalView:false
+    })
+    console.log(this.state);
+    console.log(e.target.title.value);
+  } 
 
 
   render() {
@@ -335,6 +378,10 @@ export default class Board extends Component {
           handleChangeInput={this.handleChangeInput}
           inputValue={this.state.input}
         />
+
+         {this.state.modalView && <Modal handleCloseModal={this.handleCloseModal} name={this.state.currentTitle}
+            description={this.state.currentDescription } handleSubmitModal={this.handleSubmitModal} 
+         />}
       </div>
     );
   }
