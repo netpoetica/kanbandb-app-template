@@ -47,9 +47,9 @@
 
 
 .true{
-  /* display: none; */
+  display: none!important;
   /* background-color: pink; */
 }
 .false{
-  /* display: flex; */
+  /* display: flex!important; */
 }

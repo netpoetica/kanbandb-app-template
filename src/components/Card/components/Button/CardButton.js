@@ -1,11 +1,11 @@
 import React from 'react';
 import './CardButton.css'
 
-const Button =({actionName,buttonColor})=>{
+const Button =({actionName,buttonColor, handleAction, cardId,cardStatus})=>{
     return (
     // <div className="cardbuttons">
 <button  className={"cardButton"}  style={{backgroundColor:buttonColor}}
- onClick={()=>{console.log(actionName);}}>{actionName}</button>
+ onClick={(e)=>handleAction(e,actionName,cardId, cardStatus)}>{actionName}</button>
     // </div>
     )
 }

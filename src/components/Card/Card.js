@@ -19,9 +19,9 @@ export default function Card(props) {
               <p>
                 {x.name}: {x.description}
               </p>
-              <div className={`card__actionContainer `}>
-              <CardButton actionName={"Edit"} buttonColor={'yellow'}/>
-              <CardButton actionName={"X"} buttonColor={"red"}/>
+              <div className={`card__actionContainer ${props.options}`}>
+              <CardButton actionName={"Edit"} buttonColor={'yellow'} cardId={x.id} cardStatus={x.status} handleAction={props.handleAction}/>
+              <CardButton actionName={"X"} buttonColor={"red"} cardId={x.id} cardStatus={x.status} handleAction={ props.handleAction}/>
               </div>
             </div>
           );
